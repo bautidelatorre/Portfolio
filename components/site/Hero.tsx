@@ -2,10 +2,10 @@ export function Hero() {
   return (
     <section className="flex min-h-[85vh] flex-col justify-center px-6 sm:px-10 lg:px-16">
       <div className="mx-auto w-full max-w-5xl">
-        <p className="text-sm font-medium tracking-wide text-accent uppercase">
+        <p className="font-label text-xs font-semibold tracking-[0.08em] text-accent uppercase">
           Bautista
         </p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
+        <h1 className="mt-5 max-w-3xl text-5xl leading-[1.02] font-medium tracking-[-0.03em] sm:text-7xl">
           Diseñador de producto e identidad visual.
         </h1>
         <p className="mt-6 max-w-xl text-lg text-muted">
@@ -15,13 +15,13 @@ export function Hero() {
         <div className="mt-10 flex gap-4">
           <a
             href="#proyectos"
-            className="rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-85"
+            className="rounded-full bg-dark px-6 py-3 font-label text-sm font-semibold text-white transition hover:opacity-85"
           >
             Ver proyectos
           </a>
           <a
             href="#contacto"
-            className="rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:bg-muted-bg"
+            className="rounded-full border border-border px-6 py-3 font-label text-sm font-semibold transition hover:bg-muted-bg"
           >
             Contacto
           </a>

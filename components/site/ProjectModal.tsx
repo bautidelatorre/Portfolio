@@ -43,7 +43,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
       onClick={close}
     >
       <div
-        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white"
+        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto border border-border bg-white"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative flex aspect-[4/3] items-center justify-center bg-muted-bg">
@@ -87,20 +87,20 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-muted-bg px-3 py-1 text-xs text-muted"
+                className="rounded-full bg-muted-bg px-3 py-1 font-label text-[11px] font-medium tracking-wide text-muted uppercase"
               >
                 {tag}
               </span>
             ))}
           </div>
-          <h3 className="mt-3 text-2xl font-medium">{project.title}</h3>
+          <h3 className="mt-3 text-2xl font-medium tracking-[-0.02em]">{project.title}</h3>
           <p className="mt-3 text-muted">{project.description}</p>
           {project.externalUrl && (
             <a
               href={project.externalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-block rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-85"
+              className="mt-5 inline-block rounded-full bg-dark px-5 py-2.5 font-label text-sm font-semibold text-white transition hover:opacity-85"
             >
               Ver proyecto →
             </a>

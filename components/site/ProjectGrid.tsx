@@ -9,7 +9,7 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
       id="proyectos"
       className="mx-auto w-full max-w-5xl px-6 py-20 sm:px-10 lg:px-16"
     >
-      <h2 className="text-sm font-medium tracking-wide text-accent uppercase">
+      <h2 className="font-label text-xs font-semibold tracking-[0.08em] text-accent uppercase">
         Proyectos
       </h2>
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
