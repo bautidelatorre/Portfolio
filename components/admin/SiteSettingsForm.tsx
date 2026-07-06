@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { updateSiteSettings } from "@/lib/actions/settings";
 import { themePresets } from "@/lib/theme-presets";
+import { MAX_CURSOR_GLOW_SIZE } from "@/lib/site-settings-constants";
 import { ColorPickerField } from "./ColorPickerField";
 import type { SectionConfig } from "@/lib/db/schema";
 
@@ -35,6 +36,7 @@ export function SiteSettingsForm({
     backgroundColor: string;
     darkColor: string;
     cursorGlowColor: string;
+    cursorGlowSize: number;
     fontFamily: string;
     sectionOrder: SectionConfig[];
     projectColumns: number;
@@ -44,6 +46,7 @@ export function SiteSettingsForm({
   const [backgroundColor, setBackgroundColor] = useState(defaultValues.backgroundColor);
   const [darkColor, setDarkColor] = useState(defaultValues.darkColor);
   const [cursorGlowColor, setCursorGlowColor] = useState(defaultValues.cursorGlowColor);
+  const [cursorGlowSize, setCursorGlowSize] = useState(defaultValues.cursorGlowSize);
   const [fontFamily, setFontFamily] = useState(defaultValues.fontFamily);
   const [sectionOrder, setSectionOrder] = useState<SectionConfig[]>(defaultValues.sectionOrder);
   const [projectColumns, setProjectColumns] = useState(defaultValues.projectColumns);
@@ -79,6 +82,7 @@ export function SiteSettingsForm({
           backgroundColor,
           darkColor,
           cursorGlowColor,
+          cursorGlowSize,
           fontFamily,
           sectionOrder,
           projectColumns,
@@ -134,6 +138,22 @@ export function SiteSettingsForm({
           value={cursorGlowColor}
           onChange={setCursorGlowColor}
         />
+        <div>
+          <label className="flex items-center justify-between text-sm font-medium">
+            <span>Tamaño de la mancha</span>
+            <span className="text-muted">
+              {Math.round((cursorGlowSize / MAX_CURSOR_GLOW_SIZE) * 100)}%
+            </span>
+          </label>
+          <input
+            type="range"
+            min={0}
+            max={MAX_CURSOR_GLOW_SIZE}
+            value={cursorGlowSize}
+            onChange={(e) => setCursorGlowSize(Number(e.target.value))}
+            className="mt-2 w-full"
+          />
+        </div>
         {lowContrast && (
           <p className="text-sm text-amber-600">
             Este color puede dificultar la lectura del texto blanco en la sección

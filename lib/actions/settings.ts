@@ -10,6 +10,7 @@ import {
 } from "@/lib/db/schema";
 import { auth } from "@/lib/auth";
 import googleFontsList from "@/lib/google-fonts-list.json";
+import { MAX_CURSOR_GLOW_SIZE } from "@/lib/site-settings-constants";
 
 const googleFontsSet = new Set(googleFontsList as string[]);
 
@@ -18,6 +19,7 @@ const DEFAULT_SETTINGS: Omit<SiteSettingsRow, "id" | "updatedAt"> = {
   backgroundColor: "#ffffff",
   darkColor: "#121212",
   cursorGlowColor: "#ff6044",
+  cursorGlowSize: MAX_CURSOR_GLOW_SIZE,
   fontFamily: "Zalando Sans",
   sectionOrder: [
     { key: "about", visible: true },
@@ -49,6 +51,7 @@ export type SiteSettingsInput = {
   backgroundColor: string;
   darkColor: string;
   cursorGlowColor: string;
+  cursorGlowSize: number;
   fontFamily: string;
   sectionOrder: SectionConfig[];
   projectColumns: number;
@@ -83,6 +86,11 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
     throw new Error("Cantidad de columnas inválida.");
   }
 
+  const cursorGlowSize = Math.max(
+    0,
+    Math.min(MAX_CURSOR_GLOW_SIZE, Math.round(input.cursorGlowSize))
+  );
+
   await db
     .insert(siteSettings)
     .values({
@@ -91,6 +99,7 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
       backgroundColor: input.backgroundColor,
       darkColor: input.darkColor,
       cursorGlowColor: input.cursorGlowColor,
+      cursorGlowSize,
       fontFamily,
       sectionOrder: input.sectionOrder,
       projectColumns: input.projectColumns,
@@ -103,6 +112,7 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
         backgroundColor: input.backgroundColor,
         darkColor: input.darkColor,
         cursorGlowColor: input.cursorGlowColor,
+        cursorGlowSize,
         fontFamily,
         sectionOrder: input.sectionOrder,
         projectColumns: input.projectColumns,

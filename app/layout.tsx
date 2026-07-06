@@ -57,7 +57,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <div className="noise-overlay" aria-hidden="true" />
-        <CursorGlow color={settings.cursorGlowColor} />
+        <CursorGlow color={settings.cursorGlowColor} size={settings.cursorGlowSize} />
         {children}
       </body>
     </html>
