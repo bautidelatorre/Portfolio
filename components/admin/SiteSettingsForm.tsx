@@ -34,6 +34,7 @@ export function SiteSettingsForm({
     accentColor: string;
     backgroundColor: string;
     darkColor: string;
+    cursorGlowColor: string;
     fontFamily: string;
     sectionOrder: SectionConfig[];
     projectColumns: number;
@@ -42,6 +43,7 @@ export function SiteSettingsForm({
   const [accentColor, setAccentColor] = useState(defaultValues.accentColor);
   const [backgroundColor, setBackgroundColor] = useState(defaultValues.backgroundColor);
   const [darkColor, setDarkColor] = useState(defaultValues.darkColor);
+  const [cursorGlowColor, setCursorGlowColor] = useState(defaultValues.cursorGlowColor);
   const [fontFamily, setFontFamily] = useState(defaultValues.fontFamily);
   const [sectionOrder, setSectionOrder] = useState<SectionConfig[]>(defaultValues.sectionOrder);
   const [projectColumns, setProjectColumns] = useState(defaultValues.projectColumns);
@@ -76,6 +78,7 @@ export function SiteSettingsForm({
           accentColor,
           backgroundColor,
           darkColor,
+          cursorGlowColor,
           fontFamily,
           sectionOrder,
           projectColumns,
@@ -107,6 +110,7 @@ export function SiteSettingsForm({
                 setAccentColor(preset.accentColor);
                 setBackgroundColor(preset.backgroundColor);
                 setDarkColor(preset.darkColor);
+                setCursorGlowColor(preset.accentColor);
               }}
               className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted-bg"
             >
@@ -125,6 +129,11 @@ export function SiteSettingsForm({
         <ColorPickerField label="Acento" value={accentColor} onChange={setAccentColor} />
         <ColorPickerField label="Fondo" value={backgroundColor} onChange={setBackgroundColor} />
         <ColorPickerField label="Oscuro (paneles y botones)" value={darkColor} onChange={setDarkColor} />
+        <ColorPickerField
+          label="Mancha que sigue al mouse"
+          value={cursorGlowColor}
+          onChange={setCursorGlowColor}
+        />
         {lowContrast && (
           <p className="text-sm text-amber-600">
             Este color puede dificultar la lectura del texto blanco en la sección

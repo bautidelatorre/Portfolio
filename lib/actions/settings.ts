@@ -17,6 +17,7 @@ const DEFAULT_SETTINGS: Omit<SiteSettingsRow, "id" | "updatedAt"> = {
   accentColor: "#ff6044",
   backgroundColor: "#ffffff",
   darkColor: "#121212",
+  cursorGlowColor: "#ff6044",
   fontFamily: "Zalando Sans",
   sectionOrder: [
     { key: "about", visible: true },
@@ -47,6 +48,7 @@ export type SiteSettingsInput = {
   accentColor: string;
   backgroundColor: string;
   darkColor: string;
+  cursorGlowColor: string;
   fontFamily: string;
   sectionOrder: SectionConfig[];
   projectColumns: number;
@@ -62,6 +64,7 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
     ["accentColor", input.accentColor],
     ["backgroundColor", input.backgroundColor],
     ["darkColor", input.darkColor],
+    ["cursorGlowColor", input.cursorGlowColor],
   ] as const) {
     if (!HEX_COLOR_RE.test(value)) {
       throw new Error(`Color inválido en "${field}". Usá el formato #rrggbb.`);
@@ -87,6 +90,7 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
       accentColor: input.accentColor,
       backgroundColor: input.backgroundColor,
       darkColor: input.darkColor,
+      cursorGlowColor: input.cursorGlowColor,
       fontFamily,
       sectionOrder: input.sectionOrder,
       projectColumns: input.projectColumns,
@@ -98,6 +102,7 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
         accentColor: input.accentColor,
         backgroundColor: input.backgroundColor,
         darkColor: input.darkColor,
+        cursorGlowColor: input.cursorGlowColor,
         fontFamily,
         sectionOrder: input.sectionOrder,
         projectColumns: input.projectColumns,

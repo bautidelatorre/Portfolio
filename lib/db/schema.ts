@@ -33,6 +33,7 @@ export const siteSettings = pgTable("site_settings", {
   accentColor: text("accent_color").notNull().default("#ff6044"),
   backgroundColor: text("background_color").notNull().default("#ffffff"),
   darkColor: text("dark_color").notNull().default("#121212"),
+  cursorGlowColor: text("cursor_glow_color").notNull().default("#ff6044"),
   fontFamily: text("font_family").notNull().default("Zalando Sans"),
   sectionOrder: jsonb("section_order")
     .$type<SectionConfig[]>()

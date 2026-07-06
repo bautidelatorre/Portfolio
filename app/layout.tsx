@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Zalando_Sans } from "next/font/google";
 import { getSiteSettings } from "@/lib/actions/settings";
 import { googleFontStylesheetUrl } from "@/lib/google-fonts";
 import { ThemeStyle } from "@/components/site/ThemeStyle";
+import { CursorGlow } from "@/components/site/CursorGlow";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -56,6 +57,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <div className="noise-overlay" aria-hidden="true" />
+        <CursorGlow color={settings.cursorGlowColor} />
         {children}
       </body>
     </html>
