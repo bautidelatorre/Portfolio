@@ -1,7 +1,7 @@
 export function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
+      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24">
         <a href="#" className="font-label text-sm font-semibold tracking-[-0.01em]">
           Bautista
         </a>

@@ -12,7 +12,7 @@ export function Contact() {
   return (
     <section
       id="contacto"
-      className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16"
+      className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
       <SectionHeading index="03" label="Contacto" />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">

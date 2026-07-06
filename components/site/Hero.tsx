@@ -1,6 +1,6 @@
 export function Hero() {
   return (
-    <section className="dot-grid relative flex min-h-[85vh] flex-col justify-center overflow-hidden px-6 sm:px-10 lg:px-16">
+    <section className="dot-grid relative flex min-h-[85vh] flex-col justify-center overflow-hidden px-6 sm:px-10 lg:px-16 2xl:px-24">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute top-1/2 right-[-15%] h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,106,0,0.75)_0%,rgba(255,106,0,0.35)_45%,rgba(255,106,0,0)_72%)] blur-[70px]"
@@ -14,7 +14,7 @@ export function Hero() {
         className="pointer-events-none absolute -bottom-24 left-[-8%] h-[320px] w-[320px] rounded-full bg-dark/10 blur-[90px]"
       />
 
-      <div className="relative mx-auto w-full max-w-5xl">
+      <div className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl">
         <p className="font-label text-xs font-semibold tracking-[0.08em] text-accent uppercase">
           Bautista
         </p>

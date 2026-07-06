@@ -5,8 +5,8 @@ import { ProjectModal } from "./ProjectModal";
 import { SectionHeading } from "./SectionHeading";
 
 const COLUMN_CLASSES: Record<number, string> = {
-  2: "columns-1 sm:columns-2",
-  3: "columns-1 sm:columns-2 lg:columns-3",
+  2: "columns-1 sm:columns-2 2xl:columns-3",
+  3: "columns-1 sm:columns-2 lg:columns-3 2xl:columns-4",
 };
 
 export function ProjectGrid({
@@ -21,7 +21,7 @@ export function ProjectGrid({
   return (
     <section
       id="proyectos"
-      className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16"
+      className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
       <SectionHeading index="02" label="Proyectos" />
       <div className={`mt-10 gap-6 ${columnClass}`}>
