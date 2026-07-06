@@ -10,22 +10,25 @@ function initials(title: string) {
     .join("");
 }
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cover = project.images[0];
 
   return (
     <Link
       href={`?project=${project.slug}`}
       scroll={false}
-      className="group block overflow-hidden border border-border bg-white transition hover:border-foreground/30"
+      className="group relative block overflow-hidden border border-border bg-white transition hover:border-accent/50"
     >
-      <div className="flex aspect-[4/3] items-center justify-center bg-muted-bg">
+      <span className="absolute top-3 left-3 z-10 font-label text-xs font-semibold text-white/80 mix-blend-difference">
+        {String(index).padStart(2, "0")}
+      </span>
+      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-muted-bg">
         {cover?.url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={cover.url}
             alt={cover.alt}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
           <span className="text-3xl font-medium tracking-[-0.02em] text-muted/50">

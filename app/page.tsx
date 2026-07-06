@@ -1,3 +1,4 @@
+import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
 import { About } from "@/components/site/About";
 import { ProjectGrid } from "@/components/site/ProjectGrid";
@@ -11,6 +12,7 @@ export default async function Home() {
 
   return (
     <>
+      <Nav />
       <main className="flex-1">
         <Hero />
         <About />

@@ -2,19 +2,18 @@ import { Suspense } from "react";
 import { Project } from "@/lib/types";
 import { ProjectCard } from "./ProjectCard";
 import { ProjectModal } from "./ProjectModal";
+import { SectionHeading } from "./SectionHeading";
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   return (
     <section
       id="proyectos"
-      className="mx-auto w-full max-w-5xl px-6 py-20 sm:px-10 lg:px-16"
+      className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16"
     >
-      <h2 className="font-label text-xs font-semibold tracking-[0.08em] text-accent uppercase">
-        Proyectos
-      </h2>
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+      <SectionHeading index="02" label="Proyectos" />
+      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project, i) => (
+          <ProjectCard key={project.id} project={project} index={i + 1} />
         ))}
       </div>
 
