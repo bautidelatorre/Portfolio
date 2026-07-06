@@ -5,7 +5,7 @@ export function Nav() {
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24">
         <a href="#" className="flex items-center">
-          <Image src="/logo.png" alt="Bautista" width={36} height={36} priority className="h-9 w-9" />
+          <Image src="/logo.png" alt="Bautista" width={100} height={202} priority className="h-12 w-auto" />
         </a>
         <nav className="hidden items-center gap-8 font-label text-sm text-muted sm:flex">
           <a href="#proyectos" className="transition hover:text-foreground">
