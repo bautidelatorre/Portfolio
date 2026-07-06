@@ -4,14 +4,27 @@ import { ProjectCard } from "./ProjectCard";
 import { ProjectModal } from "./ProjectModal";
 import { SectionHeading } from "./SectionHeading";
 
-export function ProjectGrid({ projects }: { projects: Project[] }) {
+const GRID_COLUMN_CLASSES: Record<number, string> = {
+  2: "grid-cols-1 gap-6 sm:grid-cols-2",
+  3: "grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3",
+};
+
+export function ProjectGrid({
+  projects,
+  columns = 3,
+}: {
+  projects: Project[];
+  columns?: number;
+}) {
+  const gridClass = GRID_COLUMN_CLASSES[columns] ?? GRID_COLUMN_CLASSES[3];
+
   return (
     <section
       id="proyectos"
       className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16"
     >
       <SectionHeading index="02" label="Proyectos" />
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={`mt-10 grid ${gridClass}`}>
         {projects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i + 1} />
         ))}

@@ -2,12 +2,12 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #121212;
-  --muted: #6e6e6e;
-  --muted-bg: #f4f3f1;
-  --accent: #ff6044;
-  --border: #e7e5e2;
   --dark: #121212;
+  --accent: #ff6044;
+  --foreground: var(--dark);
+  --muted: #6e6e6e;
+  --muted-bg: color-mix(in srgb, var(--background), var(--dark) 4%);
+  --border: color-mix(in srgb, var(--background), var(--dark) 10%);
   --dark-border: rgba(255, 255, 255, 0.14);
 }
 

@@ -9,6 +9,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           Panel de administración
         </Link>
         <div className="flex items-center gap-4 text-sm">
+          <Link href="/admin/settings" className="text-muted hover:text-foreground">
+            Personalización
+          </Link>
           <Link href="/" target="_blank" className="text-muted hover:text-foreground">
             Ver sitio
           </Link>
