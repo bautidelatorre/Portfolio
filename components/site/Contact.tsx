@@ -1,5 +1,11 @@
 import { SectionHeading } from "./SectionHeading";
 
+const MAIL_SUBJECT = "Quiero trabajar con vos";
+const MAIL_BODY = "Hola Bautista,\n\nMe gustaría contarte sobre un proyecto en el que estoy pensando.\n\n";
+const MAILTO_HREF = `mailto:bautidelatorre@gmail.com?subject=${encodeURIComponent(
+  MAIL_SUBJECT
+)}&body=${encodeURIComponent(MAIL_BODY)}`;
+
 export function Contact() {
   return (
     <section
@@ -11,7 +17,7 @@ export function Contact() {
         ¿Tenés un proyecto en mente? Hablemos.
       </p>
       <a
-        href="mailto:bautidelatorre@gmail.com"
+        href={MAILTO_HREF}
         className="mt-8 inline-block rounded-full bg-dark px-6 py-3 font-label text-sm font-semibold text-white transition hover:opacity-85"
       >
         bautidelatorre@gmail.com

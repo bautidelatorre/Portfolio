@@ -17,21 +17,21 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
     <Link
       href={`?project=${project.slug}`}
       scroll={false}
-      className="group relative block overflow-hidden border border-border bg-white transition hover:border-accent/50"
+      className="group relative mb-6 block break-inside-avoid overflow-hidden border border-border bg-white transition hover:border-accent/50"
     >
       <span className="absolute top-3 left-3 z-10 font-label text-xs font-semibold text-white/80 mix-blend-difference">
         {String(index).padStart(2, "0")}
       </span>
-      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-muted-bg">
+      <div className="flex items-center justify-center overflow-hidden bg-muted-bg">
         {cover?.url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={cover.url}
             alt={cover.alt}
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            className="block h-auto w-full transition duration-500 group-hover:scale-105"
           />
         ) : (
-          <span className="text-3xl font-medium tracking-[-0.02em] text-muted/50">
+          <span className="flex aspect-[4/3] w-full items-center justify-center text-3xl font-medium tracking-[-0.02em] text-muted/50">
             {initials(project.title)}
           </span>
         )}

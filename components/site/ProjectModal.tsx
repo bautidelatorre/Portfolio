@@ -46,13 +46,13 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
         className="max-h-[90vh] w-full max-w-3xl overflow-y-auto border border-border bg-white"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative flex aspect-[4/3] items-center justify-center bg-muted-bg">
+        <div className="relative flex min-h-64 items-center justify-center bg-muted-bg">
           {image?.url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={image.url}
               alt={image.alt}
-              className="h-full w-full object-cover"
+              className="max-h-[70vh] w-full object-contain"
             />
           ) : (
             <span className="text-sm text-muted">Imagen próximamente</span>
