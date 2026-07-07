@@ -16,13 +16,13 @@ export function Hero() {
         className="pointer-events-none absolute -bottom-24 left-[-8%] h-[320px] w-[320px] rounded-full bg-dark/10 blur-[90px]"
       />
       <FloatingRender
-        src="/floating/chair-1.webp"
-        width={700}
-        height={444}
+        src="/floating/rangefinder.webp"
+        width={1300}
+        height={1183}
         rotate={-4}
         duration={11}
         opacity={0.95}
-        className="right-[-18%] bottom-0 hidden w-[660px] xl:block 2xl:w-[880px]"
+        className="right-[-18%] bottom-0 hidden w-[560px] xl:block 2xl:w-[740px]"
       />
 
       <div className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl">
