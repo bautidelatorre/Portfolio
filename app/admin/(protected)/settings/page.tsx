@@ -2,6 +2,7 @@ import { getSiteSettings } from "@/lib/actions/settings";
 import { SiteSettingsForm } from "@/components/admin/SiteSettingsForm";
 import { FloatingRendersEditor } from "@/components/admin/FloatingRendersEditor";
 import { GlowsEditor } from "@/components/admin/GlowsEditor";
+import { SiteCopyForm } from "@/components/admin/SiteCopyForm";
 
 export default async function SettingsPage() {
   const settings = await getSiteSettings();
@@ -25,7 +26,25 @@ export default async function SettingsPage() {
         </a>
       </div>
       <div className="mt-6">
-        <SiteSettingsForm defaultValues={settings} />
+        <h2 className="text-lg font-semibold">Textos del sitio</h2>
+        <p className="mt-1 text-sm text-muted">
+          Todo el texto visible del sitio: nav, hero, bio, títulos de
+          sección y botones. Los colores y la tipografía se manejan en
+          &quot;Estilo&quot;, debajo.
+        </p>
+        <div className="mt-6">
+          <SiteCopyForm defaultValues={settings.siteCopy} />
+        </div>
+      </div>
+
+      <div className="mt-12 border-t border-border pt-8">
+        <h2 className="text-lg font-semibold">Estilo</h2>
+        <p className="mt-1 text-sm text-muted">
+          Colores, tipografía, orden de secciones y otras opciones visuales.
+        </p>
+        <div className="mt-6">
+          <SiteSettingsForm defaultValues={settings} />
+        </div>
       </div>
 
       <div className="mt-12 border-t border-border pt-8">

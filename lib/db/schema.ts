@@ -54,6 +54,45 @@ export type GlowConfig = {
   opacity: number;
 };
 
+export type SiteCopy = {
+  navProjects: string;
+  navAbout: string;
+  navContact: string;
+  heroKicker: string;
+  heroHeadline: string;
+  heroSubtext: string;
+  heroPrimaryCta: string;
+  heroSecondaryCta: string;
+  aboutLabel: string;
+  aboutHeadline: string;
+  aboutBio: string;
+  projectsLabel: string;
+  contactLabel: string;
+  contactHeadline: string;
+  footerName: string;
+};
+
+export const DEFAULT_SITE_COPY: SiteCopy = {
+  navProjects: "Projects",
+  navAbout: "About",
+  navContact: "Contact",
+  heroKicker: "Bautista",
+  heroHeadline: "Product designer & visual identity.",
+  heroSubtext:
+    "I help brands and teams build clear products and experiences, with a focus on form and detail.",
+  heroPrimaryCta: "View projects",
+  heroSecondaryCta: "Contact",
+  aboutLabel: "About me",
+  aboutHeadline:
+    "I work at the intersection of product design and brand identity, always chasing simple solutions to complex problems.",
+  aboutBio:
+    "It started as a kid — rearranging furniture by inches until a room finally felt right, noticing when a chair's proportions were just slightly off. That obsession with form and proportion never really left, it just found better tools. I still chase that same feeling in every product and brand I design today.",
+  projectsLabel: "Projects",
+  contactLabel: "Contact",
+  contactHeadline: "Got a project in mind? Let's pull up a chair.",
+  footerName: "Bautista",
+};
+
 export const siteSettings = pgTable("site_settings", {
   id: integer("id").primaryKey().default(1),
   accentColor: text("accent_color").notNull().default("#ff6044"),
@@ -76,6 +115,10 @@ export const siteSettings = pgTable("site_settings", {
     .notNull()
     .default([]),
   glows: jsonb("glows").$type<GlowConfig[]>().notNull().default([]),
+  siteCopy: jsonb("site_copy")
+    .$type<SiteCopy>()
+    .notNull()
+    .default({} as SiteCopy),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import {
   siteSettings,
+  DEFAULT_SITE_COPY,
   type SiteSettingsRow,
   type SectionConfig,
 } from "@/lib/db/schema";
@@ -29,6 +30,7 @@ const DEFAULT_SETTINGS: Omit<SiteSettingsRow, "id" | "updatedAt"> = {
   projectColumns: 3,
   floatingRenders: [],
   glows: [],
+  siteCopy: DEFAULT_SITE_COPY,
 };
 
 async function requireAdmin() {

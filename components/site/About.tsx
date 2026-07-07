@@ -1,9 +1,16 @@
 import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
 import { FloatingRender } from "./FloatingRender";
-import type { FloatingRenderConfig } from "@/lib/db/schema";
+import type { FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
+import { DEFAULT_SITE_COPY } from "@/lib/db/schema";
 
-export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
+export function About({
+  renders = [],
+  copy = DEFAULT_SITE_COPY,
+}: {
+  renders?: FloatingRenderConfig[];
+  copy?: SiteCopy;
+}) {
   const behind = renders.filter((r) => r.layer === "behind");
   const front = renders.filter((r) => r.layer === "front");
 
@@ -36,18 +43,11 @@ export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
           />
         </div>
         <div>
-          <SectionHeading index="01" label="About me" tone="dark" />
+          <SectionHeading index="01" label={copy.aboutLabel} tone="dark" />
           <p className="mt-4 max-w-2xl text-2xl leading-[1.15] font-medium tracking-[-0.02em] sm:text-3xl">
-            I work at the intersection of product design and brand identity,
-            always chasing simple solutions to complex problems.
+            {copy.aboutHeadline}
           </p>
-          <p className="mt-6 max-w-xl text-white/60">
-            It started as a kid — rearranging furniture by inches until a room
-            finally felt right, noticing when a chair&apos;s proportions were
-            just slightly off. That obsession with form and proportion never
-            really left, it just found better tools. I still chase that same
-            feeling in every product and brand I design today.
-          </p>
+          <p className="mt-6 max-w-xl text-white/60">{copy.aboutBio}</p>
         </div>
       </div>
       {front.map((r) => (

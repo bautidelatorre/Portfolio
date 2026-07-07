@@ -4,7 +4,8 @@ import { ProjectCard } from "./ProjectCard";
 import { ProjectModal } from "./ProjectModal";
 import { SectionHeading } from "./SectionHeading";
 import { FloatingRender } from "./FloatingRender";
-import type { FloatingRenderConfig } from "@/lib/db/schema";
+import type { FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
+import { DEFAULT_SITE_COPY } from "@/lib/db/schema";
 
 const COLUMN_CLASSES: Record<number, string> = {
   2: "grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3",
@@ -15,10 +16,12 @@ export function ProjectGrid({
   projects,
   columns = 3,
   renders = [],
+  copy = DEFAULT_SITE_COPY,
 }: {
   projects: Project[];
   columns?: number;
   renders?: FloatingRenderConfig[];
+  copy?: SiteCopy;
 }) {
   const columnClass = COLUMN_CLASSES[columns] ?? COLUMN_CLASSES[3];
   const behind = renders.filter((r) => r.layer === "behind");
@@ -41,7 +44,7 @@ export function ProjectGrid({
           float={r.float}
         />
       ))}
-      <SectionHeading index="02" label="Projects" />
+      <SectionHeading index="02" label={copy.projectsLabel} />
       <div className={`mt-10 gap-6 ${columnClass}`}>
         {projects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i + 1} />

@@ -8,7 +8,7 @@ import { getProjects } from "@/lib/actions/projects";
 import { getSiteSettings } from "@/lib/actions/settings";
 import { placeholderProjects } from "@/lib/placeholder-data";
 import { Project } from "@/lib/types";
-import { SectionKey, FloatingRenderConfig } from "@/lib/db/schema";
+import { SectionKey, FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
 
 const SECTION_RENDERERS: Record<
   SectionKey,
@@ -16,21 +16,31 @@ const SECTION_RENDERERS: Record<
     projects: Project[];
     columns: number;
     floatingRenders: FloatingRenderConfig[];
+    copy: SiteCopy;
   }) => React.ReactNode
 > = {
-  about: ({ floatingRenders }) => (
-    <About key="about" renders={floatingRenders.filter((r) => r.section === "about")} />
+  about: ({ floatingRenders, copy }) => (
+    <About
+      key="about"
+      renders={floatingRenders.filter((r) => r.section === "about")}
+      copy={copy}
+    />
   ),
-  projects: ({ projects, columns, floatingRenders }) => (
+  projects: ({ projects, columns, floatingRenders, copy }) => (
     <ProjectGrid
       key="projects"
       projects={projects}
       columns={columns}
       renders={floatingRenders.filter((r) => r.section === "projects")}
+      copy={copy}
     />
   ),
-  contact: ({ floatingRenders }) => (
-    <Contact key="contact" renders={floatingRenders.filter((r) => r.section === "contact")} />
+  contact: ({ floatingRenders, copy }) => (
+    <Contact
+      key="contact"
+      renders={floatingRenders.filter((r) => r.section === "contact")}
+      copy={copy}
+    />
   ),
 };
 
@@ -43,11 +53,12 @@ export default async function Home() {
 
   return (
     <>
-      <Nav />
+      <Nav copy={settings.siteCopy} />
       <main className="flex-1">
         <Hero
           renders={settings.floatingRenders.filter((r) => r.section === "hero")}
           glows={settings.glows.filter((g) => g.section === "hero")}
+          copy={settings.siteCopy}
         />
         {settings.sectionOrder
           .filter((section) => section.visible)
@@ -56,10 +67,11 @@ export default async function Home() {
               projects: visibleProjects,
               columns: settings.projectColumns,
               floatingRenders: settings.floatingRenders,
+              copy: settings.siteCopy,
             })
           )}
       </main>
-      <Footer />
+      <Footer copy={settings.siteCopy} />
     </>
   );
 }

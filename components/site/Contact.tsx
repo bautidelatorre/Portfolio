@@ -1,6 +1,7 @@
 import { SectionHeading } from "./SectionHeading";
 import { FloatingRender } from "./FloatingRender";
-import type { FloatingRenderConfig } from "@/lib/db/schema";
+import type { FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
+import { DEFAULT_SITE_COPY } from "@/lib/db/schema";
 
 const MAIL_TO = "bautidelatorre@gmail.com";
 const MAIL_SUBJECT = "Let's work together";
@@ -10,7 +11,13 @@ const GMAIL_COMPOSE_HREF = `https://mail.google.com/mail/?view=cm&fs=1&to=${enco
   MAIL_TO
 )}&su=${encodeURIComponent(MAIL_SUBJECT)}&body=${encodeURIComponent(MAIL_BODY)}`;
 
-export function Contact({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
+export function Contact({
+  renders = [],
+  copy = DEFAULT_SITE_COPY,
+}: {
+  renders?: FloatingRenderConfig[];
+  copy?: SiteCopy;
+}) {
   const behind = renders.filter((r) => r.layer === "behind");
   const front = renders.filter((r) => r.layer === "front");
 
@@ -31,9 +38,9 @@ export function Contact({ renders = [] }: { renders?: FloatingRenderConfig[] }) 
           float={r.float}
         />
       ))}
-      <SectionHeading index="03" label="Contact" />
+      <SectionHeading index="03" label={copy.contactLabel} />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
-        Got a project in mind? Let&apos;s pull up a chair.
+        {copy.contactHeadline}
       </p>
       <a
         href={GMAIL_COMPOSE_HREF}
