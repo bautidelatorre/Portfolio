@@ -45,6 +45,25 @@ export function GlowsEditor({ initialGlows }: { initialGlows: GlowConfig[] }) {
     }
   }
 
+  async function handleDuplicate(glow: GlowConfig) {
+    setError(null);
+    try {
+      const created = await addGlow(glow.section);
+      const patch: PersistablePatch = {
+        xPct: clamp(glow.xPct + 6, -20, 120),
+        yPct: clamp(glow.yPct + 6, -20, 120),
+        sizePct: glow.sizePct,
+        blur: glow.blur,
+        color: glow.color,
+        opacity: glow.opacity,
+      };
+      const updated = await updateGlow(created.id, patch);
+      setGlows((prev) => [...prev, updated]);
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
   async function handleRemove(id: string) {
     setGlows((prev) => prev.filter((g) => g.id !== id));
     try {
@@ -59,7 +78,8 @@ export function GlowsEditor({ initialGlows }: { initialGlows: GlowConfig[] }) {
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
       <p className="text-sm text-muted">
         Manchas de luz difuminadas. Arrastrá para moverlas, usá la esquina para
-        agrandarlas, y ajustá color, difuminado y opacidad debajo.
+        agrandarlas (o el slider de tamaño), y ajustá color, difuminado y
+        opacidad debajo.
       </p>
       {SECTIONS.map((section) => (
         <GlowSectionEditor
@@ -67,6 +87,7 @@ export function GlowsEditor({ initialGlows }: { initialGlows: GlowConfig[] }) {
           section={section}
           glows={glows.filter((g) => g.section === section.key)}
           onAdd={() => handleAdd(section.key)}
+          onDuplicate={handleDuplicate}
           onPatchLocal={patchLocal}
           onPersist={persist}
           onRemove={handleRemove}
@@ -80,6 +101,7 @@ function GlowSectionEditor({
   section,
   glows,
   onAdd,
+  onDuplicate,
   onPatchLocal,
   onPersist,
   onRemove,
@@ -87,6 +109,7 @@ function GlowSectionEditor({
   section: { key: FloatingRenderSection; label: string; dark?: boolean };
   glows: GlowConfig[];
   onAdd: () => Promise<void>;
+  onDuplicate: (glow: GlowConfig) => Promise<void>;
   onPatchLocal: (id: string, patch: PersistablePatch) => void;
   onPersist: (id: string, patch: PersistablePatch) => Promise<void>;
   onRemove: (id: string) => void;
@@ -181,14 +204,19 @@ function GlowSectionEditor({
               top: `${glow.yPct}%`,
               width: `${glow.sizePct}%`,
               aspectRatio: "1 / 1",
-              background: `radial-gradient(circle, ${glow.color}cc 0%, ${glow.color}55 45%, ${glow.color}00 72%)`,
-              filter: `blur(${glow.blur}px)`,
-              opacity: glow.opacity,
             }}
           >
+            {/* Blur lives on its own layer so it never swallows the handles below. */}
+            <div
+              className="pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                background: `radial-gradient(circle, ${glow.color}cc 0%, ${glow.color}55 45%, ${glow.color}00 72%)`,
+                filter: `blur(${glow.blur}px)`,
+                opacity: glow.opacity,
+              }}
+            />
             <div
               onPointerDown={(e) => startResize(glow, e)}
-              style={{ filter: "none" }}
               className="absolute -right-1.5 -bottom-1.5 h-3.5 w-3.5 cursor-se-resize rounded-full bg-accent opacity-0 group-hover:opacity-100"
             />
             <button
@@ -197,7 +225,6 @@ function GlowSectionEditor({
                 e.stopPropagation();
                 onRemove(glow.id);
               }}
-              style={{ filter: "none" }}
               className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-[10px] text-white opacity-0 group-hover:opacity-100"
             >
               ×
@@ -223,6 +250,17 @@ function GlowSectionEditor({
                 className="h-8 w-10 cursor-pointer rounded border border-border p-1"
               />
               <label className="flex items-center gap-2">
+                Tamaño
+                <input
+                  type="range"
+                  min={4}
+                  max={150}
+                  value={glow.sizePct}
+                  onChange={(e) => onPatchLocal(glow.id, { sizePct: Number(e.target.value) })}
+                  onPointerUp={() => onPersist(glow.id, { sizePct: glow.sizePct })}
+                />
+              </label>
+              <label className="flex items-center gap-2">
                 Difuminado
                 <input
                   type="range"
@@ -245,6 +283,13 @@ function GlowSectionEditor({
                   onPointerUp={() => onPersist(glow.id, { opacity: glow.opacity })}
                 />
               </label>
+              <button
+                type="button"
+                onClick={() => onDuplicate(glow)}
+                className="ml-auto rounded-full border border-border px-2.5 py-1 text-xs hover:bg-muted-bg"
+              >
+                Duplicar
+              </button>
             </div>
           ))}
         </div>

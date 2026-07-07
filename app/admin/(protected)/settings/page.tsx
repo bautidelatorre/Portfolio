@@ -8,10 +8,22 @@ export default async function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-semibold">Personalización</h1>
-      <p className="mt-1 text-sm text-muted">
-        Cambiá el estilo visual y la organización del sitio.
-      </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold">Personalización</h1>
+          <p className="mt-1 text-sm text-muted">
+            Cambiá el estilo visual y la organización del sitio.
+          </p>
+        </div>
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium whitespace-nowrap hover:bg-muted-bg"
+        >
+          Ver sitio ↗
+        </a>
+      </div>
       <div className="mt-6">
         <SiteSettingsForm defaultValues={settings} />
       </div>

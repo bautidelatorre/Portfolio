@@ -69,12 +69,32 @@ export function FloatingRendersEditor({
     }
   }
 
+  async function handleDuplicate(render: FloatingRenderConfig) {
+    setError(null);
+    try {
+      const created = await addFloatingRender(render.section, render.imageUrl);
+      const patch: PersistablePatch = {
+        xPct: clamp(render.xPct + 6, -40, 100),
+        yPct: clamp(render.yPct + 6, -40, 100),
+        widthPct: render.widthPct,
+        rotate: render.rotate,
+        opacity: render.opacity,
+        layer: render.layer,
+        float: render.float,
+      };
+      const updated = await updateFloatingRender(created.id, patch);
+      setRenders((prev) => [...prev, updated]);
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
   return (
     <div className="space-y-10">
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
       <p className="text-sm text-muted">
         Vista previa aproximada de cada sección. Arrastrá una imagen para moverla,
-        usá la esquina inferior derecha para cambiar el tamaño.
+        usá la esquina inferior derecha (o el slider de tamaño) para cambiar el tamaño.
       </p>
       {SECTIONS.map((section) => (
         <SectionEditor
@@ -82,6 +102,7 @@ export function FloatingRendersEditor({
           section={section}
           renders={renders.filter((r) => r.section === section.key)}
           onUpload={(files) => handleUpload(section.key, files)}
+          onDuplicate={handleDuplicate}
           onPatchLocal={patchLocal}
           onPersist={persist}
           onRemove={handleRemove}
@@ -95,6 +116,7 @@ function SectionEditor({
   section,
   renders,
   onUpload,
+  onDuplicate,
   onPatchLocal,
   onPersist,
   onRemove,
@@ -102,6 +124,7 @@ function SectionEditor({
   section: { key: FloatingRenderSection; label: string; dark?: boolean };
   renders: FloatingRenderConfig[];
   onUpload: (files: FileList | null) => Promise<void>;
+  onDuplicate: (render: FloatingRenderConfig) => Promise<void>;
   onPatchLocal: (id: string, patch: PersistablePatch) => void;
   onPersist: (id: string, patch: PersistablePatch) => Promise<void>;
   onRemove: (id: string) => void;
@@ -256,6 +279,17 @@ function SectionEditor({
                 </select>
               </label>
               <label className="flex items-center gap-2">
+                Tamaño
+                <input
+                  type="range"
+                  min={4}
+                  max={100}
+                  value={render.widthPct}
+                  onChange={(e) => onPatchLocal(render.id, { widthPct: Number(e.target.value) })}
+                  onPointerUp={() => onPersist(render.id, { widthPct: render.widthPct })}
+                />
+              </label>
+              <label className="flex items-center gap-2">
                 Opacidad
                 <input
                   type="range"
@@ -290,6 +324,13 @@ function SectionEditor({
                 />
                 Flotar
               </label>
+              <button
+                type="button"
+                onClick={() => onDuplicate(render)}
+                className="ml-auto rounded-full border border-border px-2.5 py-1 text-xs hover:bg-muted-bg"
+              >
+                Duplicar
+              </button>
             </div>
           ))}
         </div>
