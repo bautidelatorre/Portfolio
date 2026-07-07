@@ -3,7 +3,6 @@ import { Project } from "@/lib/types";
 import { ProjectCard } from "./ProjectCard";
 import { ProjectModal } from "./ProjectModal";
 import { SectionHeading } from "./SectionHeading";
-import { FloatingRender } from "./FloatingRender";
 
 const COLUMN_CLASSES: Record<number, string> = {
   2: "grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3",
@@ -24,16 +23,6 @@ export function ProjectGrid({
       id="proyectos"
       className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
-      <FloatingRender
-        src="/floating/chair-wire.webp"
-        width={700}
-        height={505}
-        rotate={-4}
-        duration={12}
-        delay={2}
-        opacity={0.55}
-        className="top-2 right-4 hidden w-[380px] xl:block 2xl:w-[480px] 2xl:right-10"
-      />
       <SectionHeading index="02" label="Proyectos" />
       <div className={`mt-10 gap-6 ${columnClass}`}>
         {projects.map((project, i) => (

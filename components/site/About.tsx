@@ -9,15 +9,11 @@ export function About() {
         src="/floating/chair-2.webp"
         width={700}
         height={1422}
-        rotate={4}
+        rotate={0}
         duration={10}
         delay={1}
         opacity={0.5}
-        className="top-4 right-6 hidden w-[220px] xl:block 2xl:w-[300px] 2xl:right-10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 h-full w-1/2 bg-[radial-gradient(circle_at_top_right,rgba(255,96,68,0.16),transparent_60%)]"
+        className="top-0 right-0 hidden w-[220px] xl:block 2xl:w-[300px]"
       />
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 sm:px-10 md:flex-row md:items-center lg:px-16 2xl:max-w-7xl 2xl:px-24">
         <div className="group relative shrink-0">
