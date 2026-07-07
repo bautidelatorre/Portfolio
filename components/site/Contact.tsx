@@ -23,7 +23,7 @@ export function Contact() {
         duration={10}
         delay={0.5}
         opacity={0.85}
-        className="right-4 bottom-4 hidden w-[280px] xl:block 2xl:w-[360px] 2xl:right-10"
+        className="right-4 bottom-4 hidden w-[440px] xl:block 2xl:w-[540px] 2xl:right-10"
       />
       <SectionHeading index="03" label="Contacto" />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">

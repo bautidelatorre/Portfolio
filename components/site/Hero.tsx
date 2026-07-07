@@ -10,7 +10,7 @@ export function Hero() {
         rotate={-4}
         duration={11}
         opacity={0.95}
-        className="right-4 bottom-16 hidden w-[300px] xl:block 2xl:w-[400px] 2xl:right-10"
+        className="right-4 bottom-0 hidden w-[440px] xl:block 2xl:w-[600px] 2xl:right-10"
       />
       <div
         aria-hidden="true"
