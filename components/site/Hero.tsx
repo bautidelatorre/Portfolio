@@ -22,7 +22,7 @@ export function Hero() {
         rotate={-4}
         duration={11}
         opacity={0.95}
-        className="right-[-10%] bottom-2 hidden w-[380px] xl:block 2xl:w-[500px]"
+        className="right-[-10%] top-0 hidden w-[380px] xl:block 2xl:w-[500px]"
       />
 
       <div className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl">
