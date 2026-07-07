@@ -28,6 +28,20 @@ export type NewProjectRow = typeof projects.$inferInsert;
 export type SectionKey = "about" | "projects" | "contact";
 export type SectionConfig = { key: SectionKey; visible: boolean };
 
+export type FloatingRenderSection = "hero" | "about" | "projects" | "contact";
+export type FloatingRenderLayer = "behind" | "front";
+export type FloatingRenderConfig = {
+  id: string;
+  section: FloatingRenderSection;
+  imageUrl: string;
+  xPct: number;
+  yPct: number;
+  widthPct: number;
+  rotate: number;
+  opacity: number;
+  layer: FloatingRenderLayer;
+};
+
 export const siteSettings = pgTable("site_settings", {
   id: integer("id").primaryKey().default(1),
   accentColor: text("accent_color").notNull().default("#ff6044"),
@@ -45,6 +59,10 @@ export const siteSettings = pgTable("site_settings", {
       { key: "contact", visible: true },
     ]),
   projectColumns: integer("project_columns").notNull().default(3),
+  floatingRenders: jsonb("floating_renders")
+    .$type<FloatingRenderConfig[]>()
+    .notNull()
+    .default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 

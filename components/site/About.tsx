@@ -1,20 +1,25 @@
 import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
 import { FloatingRender } from "./FloatingRender";
+import type { FloatingRenderConfig } from "@/lib/db/schema";
 
-export function About() {
+export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
+  const behind = renders.filter((r) => r.layer === "behind");
+  const front = renders.filter((r) => r.layer === "front");
+
   return (
     <section id="sobre-mi" className="relative overflow-hidden bg-dark py-20 text-white">
-      <FloatingRender
-        src="/floating/chair-2.webp"
-        width={700}
-        height={1422}
-        rotate={0}
-        duration={10}
-        delay={1}
-        opacity={0.5}
-        className="top-0 right-0 hidden w-[220px] xl:block 2xl:w-[300px]"
-      />
+      {behind.map((r) => (
+        <FloatingRender
+          key={r.id}
+          src={r.imageUrl}
+          xPct={r.xPct}
+          yPct={r.yPct}
+          widthPct={r.widthPct}
+          rotate={r.rotate}
+          opacity={r.opacity}
+        />
+      ))}
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 sm:px-10 md:flex-row md:items-center lg:px-16 2xl:max-w-7xl 2xl:px-24">
         <div className="group relative shrink-0">
           <div
@@ -41,6 +46,17 @@ export function About() {
           </p>
         </div>
       </div>
+      {front.map((r) => (
+        <FloatingRender
+          key={r.id}
+          src={r.imageUrl}
+          xPct={r.xPct}
+          yPct={r.yPct}
+          widthPct={r.widthPct}
+          rotate={r.rotate}
+          opacity={r.opacity}
+        />
+      ))}
     </section>
   );
 }

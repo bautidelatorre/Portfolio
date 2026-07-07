@@ -1,32 +1,31 @@
-import Image from "next/image";
-
 export function FloatingRender({
   src,
-  className,
-  width = 380,
-  height = 380,
-  duration = 9,
-  delay = 0,
+  xPct,
+  yPct,
+  widthPct,
   rotate = 0,
   opacity = 0.85,
-  grayscale = false,
+  duration = 10,
+  delay = 0,
 }: {
   src: string;
-  className?: string;
-  width?: number;
-  height?: number;
-  duration?: number;
-  delay?: number;
+  xPct: number;
+  yPct: number;
+  widthPct: number;
   rotate?: number;
   opacity?: number;
-  grayscale?: boolean;
+  duration?: number;
+  delay?: number;
 }) {
   return (
     <div
       aria-hidden="true"
-      className={`animate-float-slow pointer-events-none absolute ${grayscale ? "grayscale" : ""} ${className ?? ""}`}
+      className="animate-float-slow pointer-events-none absolute"
       style={
         {
+          left: `${xPct}%`,
+          top: `${yPct}%`,
+          width: `${widthPct}%`,
           opacity,
           rotate: `${rotate}deg`,
           "--float-duration": `${duration}s`,
@@ -34,7 +33,8 @@ export function FloatingRender({
         } as React.CSSProperties
       }
     >
-      <Image src={src} alt="" width={width} height={height} className="h-auto w-full" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" className="block h-auto w-full" />
     </div>
   );
 }

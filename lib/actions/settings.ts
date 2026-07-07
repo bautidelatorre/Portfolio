@@ -27,6 +27,7 @@ const DEFAULT_SETTINGS: Omit<SiteSettingsRow, "id" | "updatedAt"> = {
     { key: "contact", visible: true },
   ],
   projectColumns: 3,
+  floatingRenders: [],
 };
 
 async function requireAdmin() {
