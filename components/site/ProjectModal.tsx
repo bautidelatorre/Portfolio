@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Project } from "@/lib/types";
 
 export function ProjectModal({ projects }: { projects: Project[] }) {
@@ -10,6 +10,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
   const slug = searchParams.get("project");
   const project = projects.find((p) => p.slug === slug) ?? null;
   const [imageIndex, setImageIndex] = useState(0);
+  const dragStartX = useRef<number | null>(null);
 
   useEffect(() => {
     setImageIndex(0);
@@ -19,6 +20,8 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
     if (!project) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -27,7 +30,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
       document.body.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project]);
+  }, [project, imageIndex]);
 
   if (!project) return null;
 
@@ -35,7 +38,26 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
     router.push("?", { scroll: false });
   }
 
+  function step(delta: number) {
+    const count = project!.images.length;
+    if (count < 2) return;
+    setImageIndex((i) => (i + delta + count) % count);
+  }
+
   const image = project.images[imageIndex];
+  const hasMultiple = project.images.length > 1;
+
+  function onPointerDown(e: React.PointerEvent) {
+    dragStartX.current = e.clientX;
+  }
+
+  function onPointerUp(e: React.PointerEvent) {
+    if (dragStartX.current === null) return;
+    const delta = e.clientX - dragStartX.current;
+    dragStartX.current = null;
+    if (Math.abs(delta) < 40) return;
+    step(delta < 0 ? 1 : -1);
+  }
 
   return (
     <div
@@ -46,19 +68,43 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
         className="max-h-[90vh] w-full max-w-3xl overflow-y-auto border border-border bg-white"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative flex min-h-64 items-center justify-center bg-muted-bg">
+        <div
+          className="relative flex min-h-64 touch-pan-y items-center justify-center bg-muted-bg select-none"
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+        >
           {image?.url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={image.url}
               alt={image.alt}
+              draggable={false}
               className="max-h-[70vh] w-full object-contain"
             />
           ) : (
             <span className="text-sm text-muted">Image coming soon</span>
           )}
 
-          {project.images.length > 1 && (
+          {hasMultiple && (
+            <>
+              <button
+                onClick={() => step(-1)}
+                className="absolute top-1/2 left-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-lg leading-none shadow"
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+              <button
+                onClick={() => step(1)}
+                className="absolute top-1/2 right-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-lg leading-none shadow"
+                aria-label="Next image"
+              >
+                ›
+              </button>
+            </>
+          )}
+
+          {hasMultiple && (
             <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
               {project.images.map((_, i) => (
                 <button
