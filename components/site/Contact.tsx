@@ -3,8 +3,8 @@ import { FloatingRender } from "./FloatingRender";
 import type { FloatingRenderConfig } from "@/lib/db/schema";
 
 const MAIL_TO = "bautidelatorre@gmail.com";
-const MAIL_SUBJECT = "Quiero trabajar con vos";
-const MAIL_BODY = "Hola Bautista,\n\nMe gustaría contarte sobre un proyecto en el que estoy pensando.\n\n";
+const MAIL_SUBJECT = "Let's work together";
+const MAIL_BODY = "Hi Bautista,\n\nI'd love to tell you about a project I have in mind.\n\n";
 
 const GMAIL_COMPOSE_HREF = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
   MAIL_TO
@@ -16,7 +16,7 @@ export function Contact({ renders = [] }: { renders?: FloatingRenderConfig[] }) 
 
   return (
     <section
-      id="contacto"
+      id="contact"
       className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
       {behind.map((r) => (
@@ -31,9 +31,9 @@ export function Contact({ renders = [] }: { renders?: FloatingRenderConfig[] }) 
           float={r.float}
         />
       ))}
-      <SectionHeading index="03" label="Contacto" />
+      <SectionHeading index="03" label="Contact" />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
-        ¿Tenés un proyecto en mente? Hablemos.
+        Got a project in mind? Let&apos;s pull up a chair.
       </p>
       <a
         href={GMAIL_COMPOSE_HREF}

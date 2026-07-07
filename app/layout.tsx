@@ -23,8 +23,8 @@ const zalandoSans = Zalando_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Bautista — Diseño",
-  description: "Portfolio de trabajos de diseño de Bautista.",
+  title: "Bautista — Design",
+  description: "Bautista's design portfolio.",
 };
 
 export default async function RootLayout({

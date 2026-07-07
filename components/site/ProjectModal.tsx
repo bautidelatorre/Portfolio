@@ -55,7 +55,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
               className="max-h-[70vh] w-full object-contain"
             />
           ) : (
-            <span className="text-sm text-muted">Imagen próximamente</span>
+            <span className="text-sm text-muted">Image coming soon</span>
           )}
 
           {project.images.length > 1 && (
@@ -67,7 +67,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
                   className={`h-2 w-2 rounded-full ${
                     i === imageIndex ? "bg-foreground" : "bg-foreground/30"
                   }`}
-                  aria-label={`Ver imagen ${i + 1}`}
+                  aria-label={`View image ${i + 1}`}
                 />
               ))}
             </div>
@@ -76,7 +76,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
           <button
             onClick={close}
             className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white text-lg leading-none shadow"
-            aria-label="Cerrar"
+            aria-label="Close"
           >
             ×
           </button>
@@ -102,7 +102,7 @@ export function ProjectModal({ projects }: { projects: Project[] }) {
               rel="noopener noreferrer"
               className="mt-5 inline-block rounded-full bg-dark px-5 py-2.5 font-label text-sm font-semibold text-white transition hover:opacity-85"
             >
-              Ver proyecto →
+              View project →
             </a>
           )}
         </div>

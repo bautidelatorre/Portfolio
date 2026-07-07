@@ -47,24 +47,24 @@ export function Hero({
           Bautista
         </p>
         <h1 className="mt-5 max-w-3xl text-5xl leading-[1.02] font-medium tracking-[-0.03em] sm:text-7xl">
-          Diseñador de producto e identidad visual.
+          Product designer & visual identity.
         </h1>
         <p className="mt-6 max-w-xl text-lg text-muted">
-          Ayudo a marcas y equipos a construir productos y experiencias
-          claras, con foco en la forma y en el detalle.
+          I help brands and teams build clear products and experiences, with
+          a focus on form and detail.
         </p>
         <div className="mt-10 flex gap-4">
           <a
-            href="#proyectos"
+            href="#projects"
             className="rounded-full bg-dark px-6 py-3 font-label text-sm font-semibold text-white transition hover:opacity-85"
           >
-            Ver proyectos
+            View projects
           </a>
           <a
-            href="#contacto"
+            href="#contact"
             className="rounded-full border border-border px-6 py-3 font-label text-sm font-semibold transition hover:bg-muted-bg"
           >
-            Contacto
+            Contact
           </a>
         </div>
       </div>

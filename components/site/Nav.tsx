@@ -8,18 +8,18 @@ export function Nav() {
           <Image src="/logo.png" alt="Bautista" width={100} height={202} priority className="h-12 w-auto" />
         </a>
         <nav className="hidden items-center gap-8 font-label text-sm text-muted sm:flex">
-          <a href="#proyectos" className="transition hover:text-foreground">
-            Proyectos
+          <a href="#projects" className="transition hover:text-foreground">
+            Projects
           </a>
-          <a href="#sobre-mi" className="transition hover:text-foreground">
-            Sobre mí
+          <a href="#about" className="transition hover:text-foreground">
+            About
           </a>
         </nav>
         <a
-          href="#contacto"
+          href="#contact"
           className="rounded-full border border-border px-4 py-2 font-label text-sm font-semibold transition hover:bg-muted-bg"
         >
-          Contacto
+          Contact
         </a>
       </div>
     </header>

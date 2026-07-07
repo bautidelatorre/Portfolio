@@ -8,7 +8,7 @@ export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
   const front = renders.filter((r) => r.layer === "front");
 
   return (
-    <section id="sobre-mi" className="relative overflow-hidden bg-dark py-20 text-white">
+    <section id="about" className="relative overflow-hidden bg-dark py-20 text-white">
       {behind.map((r) => (
         <FloatingRender
           key={r.id}
@@ -29,21 +29,24 @@ export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
           />
           <Image
             src="/foto-bautista.jpg"
-            alt="Foto de Bautista"
+            alt="Photo of Bautista"
             width={320}
             height={320}
             className="relative h-48 w-48 rounded-2xl object-cover grayscale transition-all duration-500 group-hover:scale-[1.02] group-hover:grayscale-0 sm:h-56 sm:w-56"
           />
         </div>
         <div>
-          <SectionHeading index="01" label="Sobre mí" tone="dark" />
+          <SectionHeading index="01" label="About me" tone="dark" />
           <p className="mt-4 max-w-2xl text-2xl leading-[1.15] font-medium tracking-[-0.02em] sm:text-3xl">
-            Trabajo en la intersección entre diseño de producto e identidad de
-            marca, buscando siempre soluciones simples a problemas complejos.
+            I work at the intersection of product design and brand identity,
+            always chasing simple solutions to complex problems.
           </p>
           <p className="mt-6 max-w-xl text-white/60">
-            Este es un texto de ejemplo — reemplazalo por tu propia bio desde el
-            panel de administración cuando esté listo.
+            It started as a kid — rearranging furniture by inches until a room
+            finally felt right, noticing when a chair&apos;s proportions were
+            just slightly off. That obsession with form and proportion never
+            really left, it just found better tools. I still chase that same
+            feeling in every product and brand I design today.
           </p>
         </div>
       </div>

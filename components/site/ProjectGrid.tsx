@@ -26,7 +26,7 @@ export function ProjectGrid({
 
   return (
     <section
-      id="proyectos"
+      id="projects"
       className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
       {behind.map((r) => (
@@ -41,7 +41,7 @@ export function ProjectGrid({
           float={r.float}
         />
       ))}
-      <SectionHeading index="02" label="Proyectos" />
+      <SectionHeading index="02" label="Projects" />
       <div className={`mt-10 gap-6 ${columnClass}`}>
         {projects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i + 1} />

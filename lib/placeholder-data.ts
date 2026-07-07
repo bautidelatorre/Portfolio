@@ -1,54 +1,54 @@
 import { Project } from "./types";
 
-// Contenido de ejemplo — se reemplaza por proyectos reales desde el panel admin
-// una vez que la base de datos y la subida de imágenes estén conectadas.
+// Sample content — replaced by real projects from the admin panel
+// once the database and image upload are connected.
 export const placeholderProjects: Project[] = [
   {
     id: "1",
-    slug: "identidad-marca-aurora",
-    title: "Identidad de marca — Aurora",
+    slug: "aurora-brand-identity",
+    title: "Aurora — Brand identity",
     description:
-      "Sistema de identidad visual completo para una marca de indumentaria: logotipo, paleta, tipografía y aplicaciones en packaging y redes.",
-    tags: ["Branding", "Identidad visual"],
+      "Complete visual identity system for a clothing brand: logo, palette, typography, and applications across packaging and social media.",
+    tags: ["Branding", "Visual identity"],
     images: [
-      { url: "", alt: "Logotipo Aurora" },
-      { url: "", alt: "Paleta y tipografía" },
-      { url: "", alt: "Aplicación en packaging" },
+      { url: "", alt: "Aurora logo" },
+      { url: "", alt: "Palette and typography" },
+      { url: "", alt: "Packaging application" },
     ],
     featured: true,
   },
   {
     id: "2",
-    slug: "app-finanzas-personales",
-    title: "App de finanzas personales",
+    slug: "personal-finance-app",
+    title: "Personal finance app",
     description:
-      "Diseño de producto para una app móvil de control de gastos: research, wireframes y UI final en alta fidelidad.",
+      "Product design for a mobile expense-tracking app: research, wireframes, and final high-fidelity UI.",
     tags: ["UI/UX", "Mobile"],
     images: [
-      { url: "", alt: "Pantalla principal de la app" },
-      { url: "", alt: "Flujo de onboarding" },
+      { url: "", alt: "App home screen" },
+      { url: "", alt: "Onboarding flow" },
     ],
   },
   {
     id: "3",
-    slug: "landing-estudio-arquitectura",
-    title: "Landing — Estudio de arquitectura",
+    slug: "architecture-studio-landing",
+    title: "Landing page — Architecture studio",
     description:
-      "Sitio web para un estudio de arquitectura, enfocado en mostrar proyectos con fotografía de gran formato y navegación minimalista.",
+      "Website for an architecture studio, focused on showcasing projects with large-format photography and minimalist navigation.",
     tags: ["Web Design"],
-    images: [{ url: "", alt: "Home del sitio" }],
+    images: [{ url: "", alt: "Site homepage" }],
     externalUrl: "https://example.com",
   },
   {
     id: "4",
-    slug: "editorial-revista-cultura",
-    title: "Editorial — Revista de cultura",
+    slug: "culture-magazine-editorial",
+    title: "Editorial — Culture magazine",
     description:
-      "Diseño editorial de una revista trimestral: grilla, tipografía y dirección de arte para notas y tapas.",
-    tags: ["Editorial", "Tipografía"],
+      "Editorial design for a quarterly magazine: grid, typography, and art direction for features and covers.",
+    tags: ["Editorial", "Typography"],
     images: [
-      { url: "", alt: "Tapa de la revista" },
-      { url: "", alt: "Doble página interior" },
+      { url: "", alt: "Magazine cover" },
+      { url: "", alt: "Interior spread" },
     ],
   },
 ];
