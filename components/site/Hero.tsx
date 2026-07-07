@@ -1,7 +1,14 @@
 import { FloatingRender } from "./FloatingRender";
-import type { FloatingRenderConfig } from "@/lib/db/schema";
+import { GlowBlob } from "./GlowBlob";
+import type { FloatingRenderConfig, GlowConfig } from "@/lib/db/schema";
 
-export function Hero({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
+export function Hero({
+  renders = [],
+  glows = [],
+}: {
+  renders?: FloatingRenderConfig[];
+  glows?: GlowConfig[];
+}) {
   const behind = renders.filter((r) => r.layer === "behind");
   const front = renders.filter((r) => r.layer === "front");
 
@@ -9,16 +16,19 @@ export function Hero({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
     <section className="dot-grid relative flex min-h-[85vh] flex-col justify-center overflow-hidden px-6 sm:px-10 lg:px-16 2xl:px-24">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 right-[-14%] h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,106,0,0.75)_0%,rgba(255,106,0,0.35)_45%,rgba(255,106,0,0)_72%)] blur-[70px]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-[42%] right-[-6%] h-[220px] w-[220px] -translate-y-1/2 rounded-full bg-[#ff7a1a] opacity-70 blur-[60px]"
-      />
-      <div
-        aria-hidden="true"
         className="pointer-events-none absolute -bottom-24 left-[-8%] h-[320px] w-[320px] rounded-full bg-dark/10 blur-[90px]"
       />
+      {glows.map((g) => (
+        <GlowBlob
+          key={g.id}
+          xPct={g.xPct}
+          yPct={g.yPct}
+          sizePct={g.sizePct}
+          blur={g.blur}
+          color={g.color}
+          opacity={g.opacity}
+        />
+      ))}
       {behind.map((r) => (
         <FloatingRender
           key={r.id}

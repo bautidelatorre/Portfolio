@@ -43,6 +43,17 @@ export type FloatingRenderConfig = {
   float: boolean;
 };
 
+export type GlowConfig = {
+  id: string;
+  section: FloatingRenderSection;
+  xPct: number;
+  yPct: number;
+  sizePct: number;
+  blur: number;
+  color: string;
+  opacity: number;
+};
+
 export const siteSettings = pgTable("site_settings", {
   id: integer("id").primaryKey().default(1),
   accentColor: text("accent_color").notNull().default("#ff6044"),
@@ -64,6 +75,7 @@ export const siteSettings = pgTable("site_settings", {
     .$type<FloatingRenderConfig[]>()
     .notNull()
     .default([]),
+  glows: jsonb("glows").$type<GlowConfig[]>().notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 

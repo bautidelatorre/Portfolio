@@ -45,7 +45,10 @@ export default async function Home() {
     <>
       <Nav />
       <main className="flex-1">
-        <Hero renders={settings.floatingRenders.filter((r) => r.section === "hero")} />
+        <Hero
+          renders={settings.floatingRenders.filter((r) => r.section === "hero")}
+          glows={settings.glows.filter((g) => g.section === "hero")}
+        />
         {settings.sectionOrder
           .filter((section) => section.visible)
           .map((section) =>
