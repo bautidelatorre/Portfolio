@@ -45,3 +45,18 @@ body {
   background-image: radial-gradient(var(--border) 1px, transparent 1px);
   background-size: 28px 28px;
 }
+
+@keyframes float-slow {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -22px;
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow var(--float-duration, 9s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}

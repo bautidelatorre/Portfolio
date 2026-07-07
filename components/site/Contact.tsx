@@ -1,4 +1,5 @@
 import { SectionHeading } from "./SectionHeading";
+import { FloatingRender } from "./FloatingRender";
 
 const MAIL_TO = "bautidelatorre@gmail.com";
 const MAIL_SUBJECT = "Quiero trabajar con vos";
@@ -12,8 +13,17 @@ export function Contact() {
   return (
     <section
       id="contacto"
-      className="mx-auto w-full max-w-5xl px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
+      className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
+      <FloatingRender
+        src="/floating/chairs-pair.webp"
+        width={420}
+        height={236}
+        rotate={5}
+        duration={10}
+        delay={0.5}
+        className="right-[-6%] bottom-[-6%] w-[260px] sm:w-[360px]"
+      />
       <SectionHeading index="03" label="Contacto" />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
         ¿Tenés un proyecto en mente? Hablemos.

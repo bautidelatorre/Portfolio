@@ -1,9 +1,20 @@
 import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
+import { FloatingRender } from "./FloatingRender";
 
 export function About() {
   return (
     <section id="sobre-mi" className="relative overflow-hidden bg-dark py-20 text-white">
+      <FloatingRender
+        src="/floating/chair-1.webp"
+        width={420}
+        height={420}
+        rotate={8}
+        duration={10}
+        delay={1}
+        opacity={0.14}
+        className="top-[-10%] right-[2%] w-[220px] sm:w-[300px]"
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 h-full w-1/2 bg-[radial-gradient(circle_at_top_right,rgba(255,96,68,0.16),transparent_60%)]"
