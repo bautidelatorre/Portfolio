@@ -5,11 +5,11 @@ export function Hero() {
     <section className="dot-grid relative flex min-h-[85vh] flex-col justify-center overflow-hidden px-6 sm:px-10 lg:px-16 2xl:px-24">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 right-[-4%] h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,106,0,0.75)_0%,rgba(255,106,0,0.35)_45%,rgba(255,106,0,0)_72%)] blur-[70px]"
+        className="pointer-events-none absolute top-1/2 right-[-9%] h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,106,0,0.75)_0%,rgba(255,106,0,0.35)_45%,rgba(255,106,0,0)_72%)] blur-[70px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[42%] right-[4%] h-[220px] w-[220px] -translate-y-1/2 rounded-full bg-[#ff7a1a] opacity-70 blur-[60px]"
+        className="pointer-events-none absolute top-[42%] right-[-1%] h-[220px] w-[220px] -translate-y-1/2 rounded-full bg-[#ff7a1a] opacity-70 blur-[60px]"
       />
       <div
         aria-hidden="true"
@@ -22,7 +22,7 @@ export function Hero() {
         rotate={-4}
         duration={11}
         opacity={0.95}
-        className="right-[-8%] bottom-0 hidden w-[660px] xl:block 2xl:w-[880px]"
+        className="right-[-13%] bottom-0 hidden w-[660px] xl:block 2xl:w-[880px]"
       />
 
       <div className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl">
