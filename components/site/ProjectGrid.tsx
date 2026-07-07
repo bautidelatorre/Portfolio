@@ -32,7 +32,7 @@ export function ProjectGrid({
         duration={12}
         delay={2}
         opacity={0.55}
-        className="top-2 right-4 hidden w-[190px] xl:block 2xl:w-[240px] 2xl:right-10"
+        className="top-2 right-4 hidden w-[380px] xl:block 2xl:w-[480px] 2xl:right-10"
       />
       <SectionHeading index="02" label="Proyectos" />
       <div className={`mt-10 gap-6 ${columnClass}`}>

@@ -13,7 +13,7 @@ export function About() {
         duration={10}
         delay={1}
         opacity={0.5}
-        className="top-4 right-6 hidden w-[150px] xl:block 2xl:w-[210px] 2xl:right-10"
+        className="top-4 right-6 hidden w-[220px] xl:block 2xl:w-[300px] 2xl:right-10"
       />
       <div
         aria-hidden="true"

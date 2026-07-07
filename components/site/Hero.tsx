@@ -10,15 +10,15 @@ export function Hero() {
         rotate={-4}
         duration={11}
         opacity={0.95}
-        className="right-4 bottom-0 hidden w-[440px] xl:block 2xl:w-[600px] 2xl:right-10"
+        className="right-4 bottom-0 hidden w-[560px] xl:block 2xl:w-[760px] 2xl:right-10"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 right-[-15%] h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,106,0,0.75)_0%,rgba(255,106,0,0.35)_45%,rgba(255,106,0,0)_72%)] blur-[70px]"
+        className="pointer-events-none absolute top-1/2 right-[8%] h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,106,0,0.75)_0%,rgba(255,106,0,0.35)_45%,rgba(255,106,0,0)_72%)] blur-[70px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[42%] right-[-2%] h-[220px] w-[220px] -translate-y-1/2 rounded-full bg-[#ff7a1a] opacity-70 blur-[60px]"
+        className="pointer-events-none absolute top-[42%] right-[18%] h-[220px] w-[220px] -translate-y-1/2 rounded-full bg-[#ff7a1a] opacity-70 blur-[60px]"
       />
       <div
         aria-hidden="true"
