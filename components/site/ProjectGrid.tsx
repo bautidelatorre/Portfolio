@@ -26,12 +26,13 @@ export function ProjectGrid({
     >
       <FloatingRender
         src="/floating/chair-wire.webp"
-        width={420}
-        height={236}
+        width={700}
+        height={505}
         rotate={-4}
         duration={12}
         delay={2}
-        className="top-[-4%] left-[-4%] w-[260px] sm:w-[380px]"
+        opacity={0.55}
+        className="top-2 right-4 hidden w-[190px] xl:block 2xl:w-[240px] 2xl:right-10"
       />
       <SectionHeading index="02" label="Proyectos" />
       <div className={`mt-10 gap-6 ${columnClass}`}>

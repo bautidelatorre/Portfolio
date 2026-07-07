@@ -4,12 +4,13 @@ export function Hero() {
   return (
     <section className="dot-grid relative flex min-h-[85vh] flex-col justify-center overflow-hidden px-6 sm:px-10 lg:px-16 2xl:px-24">
       <FloatingRender
-        src="/floating/chair-2.webp"
-        width={420}
-        height={420}
-        rotate={-6}
+        src="/floating/chair-1.webp"
+        width={700}
+        height={444}
+        rotate={-4}
         duration={11}
-        className="right-[-6%] bottom-[-10%] w-[300px] sm:w-[420px]"
+        opacity={0.95}
+        className="right-4 bottom-16 hidden w-[300px] xl:block 2xl:w-[400px] 2xl:right-10"
       />
       <div
         aria-hidden="true"

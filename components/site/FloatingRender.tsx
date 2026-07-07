@@ -8,7 +8,8 @@ export function FloatingRender({
   duration = 9,
   delay = 0,
   rotate = 0,
-  opacity = 0.08,
+  opacity = 0.85,
+  grayscale = false,
 }: {
   src: string;
   className?: string;
@@ -18,11 +19,12 @@ export function FloatingRender({
   delay?: number;
   rotate?: number;
   opacity?: number;
+  grayscale?: boolean;
 }) {
   return (
     <div
       aria-hidden="true"
-      className={`animate-float-slow pointer-events-none absolute grayscale ${className ?? ""}`}
+      className={`animate-float-slow pointer-events-none absolute ${grayscale ? "grayscale" : ""} ${className ?? ""}`}
       style={
         {
           opacity,

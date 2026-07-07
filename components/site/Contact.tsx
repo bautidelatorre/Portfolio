@@ -17,12 +17,13 @@ export function Contact() {
     >
       <FloatingRender
         src="/floating/chairs-pair.webp"
-        width={420}
-        height={236}
-        rotate={5}
+        width={700}
+        height={488}
+        rotate={4}
         duration={10}
         delay={0.5}
-        className="right-[-6%] bottom-[-6%] w-[260px] sm:w-[360px]"
+        opacity={0.85}
+        className="right-4 bottom-4 hidden w-[280px] xl:block 2xl:w-[360px] 2xl:right-10"
       />
       <SectionHeading index="03" label="Contacto" />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">

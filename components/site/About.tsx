@@ -6,14 +6,14 @@ export function About() {
   return (
     <section id="sobre-mi" className="relative overflow-hidden bg-dark py-20 text-white">
       <FloatingRender
-        src="/floating/chair-1.webp"
-        width={420}
-        height={420}
-        rotate={8}
+        src="/floating/chair-2.webp"
+        width={700}
+        height={1422}
+        rotate={4}
         duration={10}
         delay={1}
-        opacity={0.14}
-        className="top-[-10%] right-[2%] w-[220px] sm:w-[300px]"
+        opacity={0.5}
+        className="top-4 right-4 hidden w-[130px] xl:block 2xl:w-[170px] 2xl:right-10"
       />
       <div
         aria-hidden="true"
