@@ -28,6 +28,7 @@ export function Hero({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
 
@@ -66,6 +67,7 @@ export function Hero({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
     </section>

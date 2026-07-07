@@ -28,7 +28,8 @@ async function getRenders(): Promise<FloatingRenderConfig[]> {
     .select({ floatingRenders: siteSettings.floatingRenders })
     .from(siteSettings)
     .where(eq(siteSettings.id, 1));
-  return rows.length === 0 ? [] : rows[0].floatingRenders;
+  if (rows.length === 0) return [];
+  return rows[0].floatingRenders.map((r) => ({ ...r, float: r.float ?? true }));
 }
 
 async function saveRenders(renders: FloatingRenderConfig[]) {
@@ -63,6 +64,7 @@ export async function addFloatingRender(
     rotate: 0,
     opacity: 0.85,
     layer: "behind",
+    float: true,
   };
   await saveRenders([...renders, next]);
   return next;
@@ -71,7 +73,10 @@ export async function addFloatingRender(
 export async function updateFloatingRender(
   id: string,
   patch: Partial<
-    Pick<FloatingRenderConfig, "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer">
+    Pick<
+      FloatingRenderConfig,
+      "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer" | "float"
+    >
   >
 ): Promise<FloatingRenderConfig> {
   await requireAdmin();
@@ -94,6 +99,7 @@ export async function updateFloatingRender(
     }
     next.layer = patch.layer as FloatingRenderLayer;
   }
+  if (patch.float !== undefined) next.float = patch.float;
 
   renders[index] = next;
   await saveRenders(renders);

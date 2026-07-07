@@ -7,6 +7,7 @@ export function FloatingRender({
   opacity = 0.85,
   duration = 10,
   delay = 0,
+  float = true,
 }: {
   src: string;
   xPct: number;
@@ -16,11 +17,12 @@ export function FloatingRender({
   opacity?: number;
   duration?: number;
   delay?: number;
+  float?: boolean;
 }) {
   return (
     <div
       aria-hidden="true"
-      className="animate-float-slow pointer-events-none absolute"
+      className={`pointer-events-none absolute ${float ? "animate-float-slow" : ""}`}
       style={
         {
           left: `${xPct}%`,

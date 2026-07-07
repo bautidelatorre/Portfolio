@@ -10,7 +10,7 @@ import {
 import type { FloatingRenderConfig, FloatingRenderSection } from "@/lib/db/schema";
 
 type PersistablePatch = Partial<
-  Pick<FloatingRenderConfig, "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer">
+  Pick<FloatingRenderConfig, "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer" | "float">
 >;
 
 const SECTIONS: { key: FloatingRenderSection; label: string; dark?: boolean }[] = [
@@ -277,6 +277,18 @@ function SectionEditor({
                   onChange={(e) => onPatchLocal(render.id, { rotate: Number(e.target.value) })}
                   onPointerUp={() => onPersist(render.id, { rotate: render.rotate })}
                 />
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={render.float ?? true}
+                  onChange={(e) => {
+                    const float = e.target.checked;
+                    onPatchLocal(render.id, { float });
+                    onPersist(render.id, { float });
+                  }}
+                />
+                Flotar
               </label>
             </div>
           ))}

@@ -38,6 +38,7 @@ export function ProjectGrid({
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
       <SectionHeading index="02" label="Proyectos" />
@@ -59,6 +60,7 @@ export function ProjectGrid({
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
     </section>

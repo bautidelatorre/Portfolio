@@ -18,6 +18,7 @@ export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 sm:px-10 md:flex-row md:items-center lg:px-16 2xl:max-w-7xl 2xl:px-24">
@@ -55,6 +56,7 @@ export function About({ renders = [] }: { renders?: FloatingRenderConfig[] }) {
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
     </section>

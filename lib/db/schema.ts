@@ -40,6 +40,7 @@ export type FloatingRenderConfig = {
   rotate: number;
   opacity: number;
   layer: FloatingRenderLayer;
+  float: boolean;
 };
 
 export const siteSettings = pgTable("site_settings", {

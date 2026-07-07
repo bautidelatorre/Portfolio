@@ -28,6 +28,7 @@ export function Contact({ renders = [] }: { renders?: FloatingRenderConfig[] }) 
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
       <SectionHeading index="03" label="Contacto" />
@@ -51,6 +52,7 @@ export function Contact({ renders = [] }: { renders?: FloatingRenderConfig[] }) 
           widthPct={r.widthPct}
           rotate={r.rotate}
           opacity={r.opacity}
+          float={r.float}
         />
       ))}
     </section>
