@@ -22,7 +22,7 @@ export function FloatingRender({
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none absolute ${float ? "animate-float-slow" : ""}`}
+      className={`pointer-events-none absolute max-sm:hidden ${float ? "animate-float-slow" : ""}`}
       style={
         {
           left: `${xPct}%`,

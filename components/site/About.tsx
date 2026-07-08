@@ -29,7 +29,7 @@ export function About({
         />
       ))}
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 sm:px-10 md:flex-row md:items-center lg:px-16 2xl:max-w-7xl 2xl:px-24">
-        <div className="group relative shrink-0">
+        <div className="group relative shrink-0 self-center">
           <div
             aria-hidden="true"
             className="absolute -right-3 -bottom-3 h-48 w-48 rounded-2xl bg-accent transition-transform duration-500 group-hover:translate-x-1 group-hover:translate-y-1 sm:h-56 sm:w-56"

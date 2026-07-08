@@ -50,6 +50,12 @@ export function Contact({
       >
         {MAIL_TO}
       </a>
+      <div className="mt-12 hidden max-sm:block" aria-hidden="true">
+        {[...behind, ...front].map((r) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img key={r.id} src={r.imageUrl} alt="" className="w-full rounded-2xl object-cover" />
+        ))}
+      </div>
       {front.map((r) => (
         <FloatingRender
           key={r.id}
