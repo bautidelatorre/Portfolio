@@ -29,18 +29,20 @@ export function Contact({
       {behind.map((r) => (
         <FloatingRender key={r.id} render={r} />
       ))}
-      <SectionHeading index="03" label={copy.contactLabel} />
-      <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
-        {copy.contactHeadline}
-      </p>
-      <a
-        href={GMAIL_COMPOSE_HREF}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-8 inline-block rounded-full bg-dark px-6 py-3 font-label text-sm font-semibold text-white transition hover:opacity-85"
-      >
-        {MAIL_TO}
-      </a>
+      <div className="max-sm:-translate-y-8">
+        <SectionHeading index="03" label={copy.contactLabel} />
+        <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
+          {copy.contactHeadline}
+        </p>
+        <a
+          href={GMAIL_COMPOSE_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 inline-block rounded-full bg-dark px-6 py-3 font-label text-sm font-semibold text-white transition hover:opacity-85"
+        >
+          {MAIL_TO}
+        </a>
+      </div>
       {front.map((r) => (
         <FloatingRender key={r.id} render={r} />
       ))}
