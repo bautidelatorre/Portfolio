@@ -1,5 +1,6 @@
 import { FloatingRender } from "./FloatingRender";
 import { GlowBlob } from "./GlowBlob";
+import { MobileOffset } from "./MobileOffset";
 import type { FloatingRenderConfig, GlowConfig, SiteCopy } from "@/lib/db/schema";
 import { DEFAULT_SITE_COPY } from "@/lib/db/schema";
 
@@ -7,10 +8,12 @@ export function Hero({
   renders = [],
   glows = [],
   copy = DEFAULT_SITE_COPY,
+  mobileOffset = 0,
 }: {
   renders?: FloatingRenderConfig[];
   glows?: GlowConfig[];
   copy?: SiteCopy;
+  mobileOffset?: number;
 }) {
   const behind = renders.filter((r) => r.layer === "behind");
   const front = renders.filter((r) => r.layer === "front");
@@ -36,7 +39,10 @@ export function Hero({
         <FloatingRender key={r.id} render={r} />
       ))}
 
-      <div className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl">
+      <MobileOffset
+        offset={mobileOffset}
+        className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl"
+      >
         <p className="font-label text-xs font-semibold tracking-[0.08em] text-accent uppercase">
           {copy.heroKicker}
         </p>
@@ -58,7 +64,7 @@ export function Hero({
             {copy.heroSecondaryCta}
           </a>
         </div>
-      </div>
+      </MobileOffset>
       {front.map((r) => (
         <FloatingRender key={r.id} render={r} />
       ))}

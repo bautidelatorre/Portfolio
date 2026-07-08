@@ -3,6 +3,7 @@ import { SiteSettingsForm } from "@/components/admin/SiteSettingsForm";
 import { FloatingRendersEditor } from "@/components/admin/FloatingRendersEditor";
 import { GlowsEditor } from "@/components/admin/GlowsEditor";
 import { SiteCopyForm } from "@/components/admin/SiteCopyForm";
+import { ContentOffsetsEditor } from "@/components/admin/ContentOffsetsEditor";
 
 export default async function SettingsPage() {
   const settings = await getSiteSettings();
@@ -66,6 +67,17 @@ export default async function SettingsPage() {
         </p>
         <div className="mt-6">
           <GlowsEditor initialGlows={settings.glows} />
+        </div>
+      </div>
+
+      <div className="mt-12 border-t border-border pt-8">
+        <h2 className="text-lg font-semibold">Posición de textos (mobile)</h2>
+        <p className="mt-1 text-sm text-muted">
+          Ajustá qué tan arriba o abajo aparece el título, texto y botón de
+          cada sección en celulares, sin tocar la versión de escritorio.
+        </p>
+        <div className="mt-6">
+          <ContentOffsetsEditor initialOffsets={settings.mobileContentOffsets} />
         </div>
       </div>
     </div>

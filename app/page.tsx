@@ -8,7 +8,12 @@ import { getProjects } from "@/lib/actions/projects";
 import { getSiteSettings } from "@/lib/actions/settings";
 import { placeholderProjects } from "@/lib/placeholder-data";
 import { Project } from "@/lib/types";
-import { SectionKey, FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
+import {
+  SectionKey,
+  FloatingRenderConfig,
+  SiteCopy,
+  MobileContentOffsets,
+} from "@/lib/db/schema";
 
 const SECTION_RENDERERS: Record<
   SectionKey,
@@ -17,29 +22,33 @@ const SECTION_RENDERERS: Record<
     columns: number;
     floatingRenders: FloatingRenderConfig[];
     copy: SiteCopy;
+    mobileOffsets: MobileContentOffsets;
   }) => React.ReactNode
 > = {
-  about: ({ floatingRenders, copy }) => (
+  about: ({ floatingRenders, copy, mobileOffsets }) => (
     <About
       key="about"
       renders={floatingRenders.filter((r) => r.section === "about")}
       copy={copy}
+      mobileOffset={mobileOffsets.about}
     />
   ),
-  projects: ({ projects, columns, floatingRenders, copy }) => (
+  projects: ({ projects, columns, floatingRenders, copy, mobileOffsets }) => (
     <ProjectGrid
       key="projects"
       projects={projects}
       columns={columns}
       renders={floatingRenders.filter((r) => r.section === "projects")}
       copy={copy}
+      mobileOffset={mobileOffsets.projects}
     />
   ),
-  contact: ({ floatingRenders, copy }) => (
+  contact: ({ floatingRenders, copy, mobileOffsets }) => (
     <Contact
       key="contact"
       renders={floatingRenders.filter((r) => r.section === "contact")}
       copy={copy}
+      mobileOffset={mobileOffsets.contact}
     />
   ),
 };
@@ -59,6 +68,7 @@ export default async function Home() {
           renders={settings.floatingRenders.filter((r) => r.section === "hero")}
           glows={settings.glows.filter((g) => g.section === "hero")}
           copy={settings.siteCopy}
+          mobileOffset={settings.mobileContentOffsets.hero}
         />
         {settings.sectionOrder
           .filter((section) => section.visible)
@@ -68,6 +78,7 @@ export default async function Home() {
               columns: settings.projectColumns,
               floatingRenders: settings.floatingRenders,
               copy: settings.siteCopy,
+              mobileOffsets: settings.mobileContentOffsets,
             })
           )}
       </main>

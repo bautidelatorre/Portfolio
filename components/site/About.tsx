@@ -1,15 +1,18 @@
 import Image from "next/image";
 import { SectionHeading } from "./SectionHeading";
 import { FloatingRender } from "./FloatingRender";
+import { MobileOffset } from "./MobileOffset";
 import type { FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
 import { DEFAULT_SITE_COPY } from "@/lib/db/schema";
 
 export function About({
   renders = [],
   copy = DEFAULT_SITE_COPY,
+  mobileOffset = 0,
 }: {
   renders?: FloatingRenderConfig[];
   copy?: SiteCopy;
+  mobileOffset?: number;
 }) {
   const behind = renders.filter((r) => r.layer === "behind");
   const front = renders.filter((r) => r.layer === "front");
@@ -33,13 +36,13 @@ export function About({
             className="relative h-48 w-48 rounded-2xl object-cover grayscale transition-all duration-500 group-hover:scale-[1.02] group-hover:grayscale-0 sm:h-56 sm:w-56"
           />
         </div>
-        <div>
+        <MobileOffset offset={mobileOffset}>
           <SectionHeading index="01" label={copy.aboutLabel} tone="dark" />
           <p className="mt-4 max-w-2xl text-2xl leading-[1.15] font-medium tracking-[-0.02em] sm:text-3xl">
             {copy.aboutHeadline}
           </p>
           <p className="mt-6 max-w-xl text-white/60">{copy.aboutBio}</p>
-        </div>
+        </MobileOffset>
       </div>
       {front.map((r) => (
         <FloatingRender key={r.id} render={r} />

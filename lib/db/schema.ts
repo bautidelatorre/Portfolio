@@ -60,6 +60,20 @@ export type GlowConfig = {
   opacity: number;
 };
 
+export type MobileContentOffsets = {
+  hero: number;
+  about: number;
+  projects: number;
+  contact: number;
+};
+
+export const DEFAULT_MOBILE_CONTENT_OFFSETS: MobileContentOffsets = {
+  hero: 0,
+  about: 0,
+  projects: 0,
+  contact: -48,
+};
+
 export type SiteCopy = {
   navProjects: string;
   navAbout: string;
@@ -121,6 +135,10 @@ export const siteSettings = pgTable("site_settings", {
     .notNull()
     .default([]),
   glows: jsonb("glows").$type<GlowConfig[]>().notNull().default([]),
+  mobileContentOffsets: jsonb("mobile_content_offsets")
+    .$type<MobileContentOffsets>()
+    .notNull()
+    .default(DEFAULT_MOBILE_CONTENT_OFFSETS),
   siteCopy: jsonb("site_copy")
     .$type<SiteCopy>()
     .notNull()

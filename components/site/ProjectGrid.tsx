@@ -4,6 +4,7 @@ import { ProjectCard } from "./ProjectCard";
 import { ProjectModal } from "./ProjectModal";
 import { SectionHeading } from "./SectionHeading";
 import { FloatingRender } from "./FloatingRender";
+import { MobileOffset } from "./MobileOffset";
 import type { FloatingRenderConfig, SiteCopy } from "@/lib/db/schema";
 import { DEFAULT_SITE_COPY } from "@/lib/db/schema";
 
@@ -17,11 +18,13 @@ export function ProjectGrid({
   columns = 3,
   renders = [],
   copy = DEFAULT_SITE_COPY,
+  mobileOffset = 0,
 }: {
   projects: Project[];
   columns?: number;
   renders?: FloatingRenderConfig[];
   copy?: SiteCopy;
+  mobileOffset?: number;
 }) {
   const columnClass = COLUMN_CLASSES[columns] ?? COLUMN_CLASSES[3];
   const behind = renders.filter((r) => r.layer === "behind");
@@ -35,7 +38,9 @@ export function ProjectGrid({
       {behind.map((r) => (
         <FloatingRender key={r.id} render={r} />
       ))}
-      <SectionHeading index="02" label={copy.projectsLabel} />
+      <MobileOffset offset={mobileOffset}>
+        <SectionHeading index="02" label={copy.projectsLabel} />
+      </MobileOffset>
       <div className={`mt-10 gap-6 ${columnClass}`}>
         {projects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i + 1} />

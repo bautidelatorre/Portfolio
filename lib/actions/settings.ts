@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import {
   siteSettings,
   DEFAULT_SITE_COPY,
+  DEFAULT_MOBILE_CONTENT_OFFSETS,
   type SiteSettingsRow,
   type SectionConfig,
 } from "@/lib/db/schema";
@@ -31,6 +32,7 @@ const DEFAULT_SETTINGS: Omit<SiteSettingsRow, "id" | "updatedAt"> = {
   floatingRenders: [],
   glows: [],
   siteCopy: DEFAULT_SITE_COPY,
+  mobileContentOffsets: DEFAULT_MOBILE_CONTENT_OFFSETS,
 };
 
 async function requireAdmin() {
