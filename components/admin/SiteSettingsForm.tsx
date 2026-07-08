@@ -76,20 +76,20 @@ export function SiteSettingsForm({
     setError(null);
     setSuccess(false);
     startTransition(async () => {
-      try {
-        await updateSiteSettings({
-          accentColor,
-          backgroundColor,
-          darkColor,
-          cursorGlowColor,
-          cursorGlowSize,
-          fontFamily,
-          sectionOrder,
-          projectColumns,
-        });
+      const result = await updateSiteSettings({
+        accentColor,
+        backgroundColor,
+        darkColor,
+        cursorGlowColor,
+        cursorGlowSize,
+        fontFamily,
+        sectionOrder,
+        projectColumns,
+      });
+      if (result.error) {
+        setError(result.error);
+      } else {
         setSuccess(true);
-      } catch (err) {
-        setError((err as Error).message);
       }
     });
   }

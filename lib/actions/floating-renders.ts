@@ -48,26 +48,30 @@ async function saveRenders(renders: FloatingRenderConfig[]) {
 export async function addFloatingRender(
   section: FloatingRenderSection,
   imageUrl: string
-): Promise<FloatingRenderConfig> {
-  await requireAdmin();
-  if (!SECTIONS.includes(section)) throw new Error("Sección inválida.");
-  if (!imageUrl.startsWith("http")) throw new Error("Imagen inválida.");
+): Promise<{ data?: FloatingRenderConfig; error?: string }> {
+  try {
+    await requireAdmin();
+    if (!SECTIONS.includes(section)) return { error: "Sección inválida." };
+    if (!imageUrl.startsWith("http")) return { error: "Imagen inválida." };
 
-  const renders = await getRenders();
-  const next: FloatingRenderConfig = {
-    id: randomUUID(),
-    section,
-    imageUrl,
-    xPct: 55,
-    yPct: 15,
-    widthPct: 28,
-    rotate: 0,
-    opacity: 0.85,
-    layer: "behind",
-    float: true,
-  };
-  await saveRenders([...renders, next]);
-  return next;
+    const renders = await getRenders();
+    const next: FloatingRenderConfig = {
+      id: randomUUID(),
+      section,
+      imageUrl,
+      xPct: 55,
+      yPct: 15,
+      widthPct: 28,
+      rotate: 0,
+      opacity: 0.85,
+      layer: "behind",
+      float: true,
+    };
+    await saveRenders([...renders, next]);
+    return { data: next };
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
 }
 
 export async function updateFloatingRender(
@@ -78,36 +82,45 @@ export async function updateFloatingRender(
       "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer" | "float"
     >
   >
-): Promise<FloatingRenderConfig> {
-  await requireAdmin();
+): Promise<{ data?: FloatingRenderConfig; error?: string }> {
+  try {
+    await requireAdmin();
 
-  const renders = await getRenders();
-  const index = renders.findIndex((r) => r.id === id);
-  if (index === -1) throw new Error("No se encontró la imagen.");
+    const renders = await getRenders();
+    const index = renders.findIndex((r) => r.id === id);
+    if (index === -1) return { error: "No se encontró la imagen." };
 
-  const current = renders[index];
-  const next: FloatingRenderConfig = { ...current };
+    const current = renders[index];
+    const next: FloatingRenderConfig = { ...current };
 
-  if (patch.xPct !== undefined) next.xPct = clamp(patch.xPct, -50, 150);
-  if (patch.yPct !== undefined) next.yPct = clamp(patch.yPct, -50, 150);
-  if (patch.widthPct !== undefined) next.widthPct = clamp(patch.widthPct, 4, 150);
-  if (patch.rotate !== undefined) next.rotate = clamp(patch.rotate, -180, 180);
-  if (patch.opacity !== undefined) next.opacity = clamp(patch.opacity, 0, 1);
-  if (patch.layer !== undefined) {
-    if (patch.layer !== "behind" && patch.layer !== "front") {
-      throw new Error("Capa inválida.");
+    if (patch.xPct !== undefined) next.xPct = clamp(patch.xPct, -50, 150);
+    if (patch.yPct !== undefined) next.yPct = clamp(patch.yPct, -50, 150);
+    if (patch.widthPct !== undefined) next.widthPct = clamp(patch.widthPct, 4, 150);
+    if (patch.rotate !== undefined) next.rotate = clamp(patch.rotate, -180, 180);
+    if (patch.opacity !== undefined) next.opacity = clamp(patch.opacity, 0, 1);
+    if (patch.layer !== undefined) {
+      if (patch.layer !== "behind" && patch.layer !== "front") {
+        return { error: "Capa inválida." };
+      }
+      next.layer = patch.layer as FloatingRenderLayer;
     }
-    next.layer = patch.layer as FloatingRenderLayer;
-  }
-  if (patch.float !== undefined) next.float = patch.float;
+    if (patch.float !== undefined) next.float = patch.float;
 
-  renders[index] = next;
-  await saveRenders(renders);
-  return next;
+    renders[index] = next;
+    await saveRenders(renders);
+    return { data: next };
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
 }
 
-export async function removeFloatingRender(id: string) {
-  await requireAdmin();
-  const renders = await getRenders();
-  await saveRenders(renders.filter((r) => r.id !== id));
+export async function removeFloatingRender(id: string): Promise<{ error?: string }> {
+  try {
+    await requireAdmin();
+    const renders = await getRenders();
+    await saveRenders(renders.filter((r) => r.id !== id));
+    return {};
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
 }

@@ -37,11 +37,8 @@ export function FloatingRendersEditor({
   }
 
   async function persist(id: string, patch: PersistablePatch) {
-    try {
-      await updateFloatingRender(id, patch);
-    } catch (err) {
-      setError((err as Error).message);
-    }
+    const result = await updateFloatingRender(id, patch);
+    if (result.error) setError(result.error);
   }
 
   async function handleUpload(section: FloatingRenderSection, files: FileList | null) {
@@ -53,8 +50,12 @@ export function FloatingRendersEditor({
         access: "public",
         handleUploadUrl: "/api/upload",
       });
-      const created = await addFloatingRender(section, blob.url);
-      setRenders((prev) => [...prev, created]);
+      const result = await addFloatingRender(section, blob.url);
+      if (result.error || !result.data) {
+        setError(result.error ?? "Failed to add image.");
+        return;
+      }
+      setRenders((prev) => [...prev, result.data!]);
     } catch (err) {
       setError((err as Error).message);
     }
@@ -62,31 +63,32 @@ export function FloatingRendersEditor({
 
   async function handleRemove(id: string) {
     setRenders((prev) => prev.filter((r) => r.id !== id));
-    try {
-      await removeFloatingRender(id);
-    } catch (err) {
-      setError((err as Error).message);
-    }
+    const result = await removeFloatingRender(id);
+    if (result.error) setError(result.error);
   }
 
   async function handleDuplicate(render: FloatingRenderConfig) {
     setError(null);
-    try {
-      const created = await addFloatingRender(render.section, render.imageUrl);
-      const patch: PersistablePatch = {
-        xPct: clamp(render.xPct + 6, -40, 100),
-        yPct: clamp(render.yPct + 6, -40, 100),
-        widthPct: render.widthPct,
-        rotate: render.rotate,
-        opacity: render.opacity,
-        layer: render.layer,
-        float: render.float,
-      };
-      const updated = await updateFloatingRender(created.id, patch);
-      setRenders((prev) => [...prev, updated]);
-    } catch (err) {
-      setError((err as Error).message);
+    const created = await addFloatingRender(render.section, render.imageUrl);
+    if (created.error || !created.data) {
+      setError(created.error ?? "Failed to duplicate image.");
+      return;
     }
+    const patch: PersistablePatch = {
+      xPct: clamp(render.xPct + 6, -40, 100),
+      yPct: clamp(render.yPct + 6, -40, 100),
+      widthPct: render.widthPct,
+      rotate: render.rotate,
+      opacity: render.opacity,
+      layer: render.layer,
+      float: render.float,
+    };
+    const updated = await updateFloatingRender(created.data.id, patch);
+    if (updated.error || !updated.data) {
+      setError(updated.error ?? "Failed to duplicate image.");
+      return;
+    }
+    setRenders((prev) => [...prev, updated.data!]);
   }
 
   return (

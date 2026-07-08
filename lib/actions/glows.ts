@@ -40,55 +40,72 @@ async function saveGlows(glows: GlowConfig[]) {
   revalidatePath("/admin/settings");
 }
 
-export async function addGlow(section: FloatingRenderSection): Promise<GlowConfig> {
-  await requireAdmin();
-  if (!SECTIONS.includes(section)) throw new Error("Sección inválida.");
+export async function addGlow(
+  section: FloatingRenderSection
+): Promise<{ data?: GlowConfig; error?: string }> {
+  try {
+    await requireAdmin();
+    if (!SECTIONS.includes(section)) return { error: "Sección inválida." };
 
-  const glows = await getGlows();
-  const next: GlowConfig = {
-    id: randomUUID(),
-    section,
-    xPct: 70,
-    yPct: 45,
-    sizePct: 40,
-    blur: 70,
-    color: "#ff6044",
-    opacity: 0.75,
-  };
-  await saveGlows([...glows, next]);
-  return next;
+    const glows = await getGlows();
+    const next: GlowConfig = {
+      id: randomUUID(),
+      section,
+      xPct: 70,
+      yPct: 45,
+      sizePct: 40,
+      blur: 70,
+      color: "#ff6044",
+      opacity: 0.75,
+    };
+    await saveGlows([...glows, next]);
+    return { data: next };
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
 }
 
 export async function updateGlow(
   id: string,
   patch: Partial<Pick<GlowConfig, "xPct" | "yPct" | "sizePct" | "blur" | "color" | "opacity">>
-): Promise<GlowConfig> {
-  await requireAdmin();
+): Promise<{ data?: GlowConfig; error?: string }> {
+  try {
+    await requireAdmin();
 
-  const glows = await getGlows();
-  const index = glows.findIndex((g) => g.id === id);
-  if (index === -1) throw new Error("No se encontró la mancha.");
+    const glows = await getGlows();
+    const index = glows.findIndex((g) => g.id === id);
+    if (index === -1) return { error: "No se encontró la mancha." };
 
-  const current = glows[index];
-  const next: GlowConfig = { ...current };
+    const current = glows[index];
+    const next: GlowConfig = { ...current };
 
-  if (patch.xPct !== undefined) next.xPct = clamp(patch.xPct, -50, 150);
-  if (patch.yPct !== undefined) next.yPct = clamp(patch.yPct, -50, 150);
-  if (patch.sizePct !== undefined) next.sizePct = clamp(patch.sizePct, 4, 200);
-  if (patch.blur !== undefined) next.blur = clamp(patch.blur, 0, 200);
-  if (patch.opacity !== undefined) next.opacity = clamp(patch.opacity, 0, 1);
-  if (patch.color !== undefined) {
-    if (!HEX_COLOR_RE.test(patch.color)) throw new Error("Color inválido. Usá el formato #rrggbb.");
-    next.color = patch.color;
+    if (patch.xPct !== undefined) next.xPct = clamp(patch.xPct, -50, 150);
+    if (patch.yPct !== undefined) next.yPct = clamp(patch.yPct, -50, 150);
+    if (patch.sizePct !== undefined) next.sizePct = clamp(patch.sizePct, 4, 200);
+    if (patch.blur !== undefined) next.blur = clamp(patch.blur, 0, 200);
+    if (patch.opacity !== undefined) next.opacity = clamp(patch.opacity, 0, 1);
+    if (patch.color !== undefined) {
+      if (!HEX_COLOR_RE.test(patch.color)) {
+        return { error: "Color inválido. Usá el formato #rrggbb." };
+      }
+      next.color = patch.color;
+    }
+
+    glows[index] = next;
+    await saveGlows(glows);
+    return { data: next };
+  } catch (err) {
+    return { error: (err as Error).message };
   }
-
-  glows[index] = next;
-  await saveGlows(glows);
-  return next;
 }
 
-export async function removeGlow(id: string) {
-  await requireAdmin();
-  const glows = await getGlows();
-  await saveGlows(glows.filter((g) => g.id !== id));
+export async function removeGlow(id: string): Promise<{ error?: string }> {
+  try {
+    await requireAdmin();
+    const glows = await getGlows();
+    await saveGlows(glows.filter((g) => g.id !== id));
+    return {};
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
 }

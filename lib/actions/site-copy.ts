@@ -38,33 +38,42 @@ export async function getSiteCopy(): Promise<SiteCopy> {
   return { ...DEFAULT_SITE_COPY, ...rows[0].siteCopy };
 }
 
-export async function updateSiteCopy(input: SiteCopy) {
-  await requireAdmin();
+const MAX_LENGTH = 3000;
 
-  const next = { ...DEFAULT_SITE_COPY };
-  for (const key of Object.keys(DEFAULT_SITE_COPY) as (keyof SiteCopy)[]) {
-    const value = input[key];
-    if (typeof value !== "string") {
-      throw new Error(`Missing text for "${FIELD_LABELS[key]}".`);
+export async function updateSiteCopy(input: SiteCopy): Promise<{ error?: string }> {
+  try {
+    await requireAdmin();
+
+    const next = { ...DEFAULT_SITE_COPY };
+    for (const key of Object.keys(DEFAULT_SITE_COPY) as (keyof SiteCopy)[]) {
+      const value = input[key];
+      if (typeof value !== "string") {
+        return { error: `Missing text for "${FIELD_LABELS[key]}".` };
+      }
+      const trimmed = value.trim();
+      if (trimmed.length === 0) {
+        return { error: `"${FIELD_LABELS[key]}" can't be empty.` };
+      }
+      if (trimmed.length > MAX_LENGTH) {
+        return {
+          error: `"${FIELD_LABELS[key]}" is too long (max ${MAX_LENGTH} characters).`,
+        };
+      }
+      next[key] = trimmed;
     }
-    const trimmed = value.trim();
-    if (trimmed.length === 0) {
-      throw new Error(`"${FIELD_LABELS[key]}" can't be empty.`);
-    }
-    if (trimmed.length > 400) {
-      throw new Error(`"${FIELD_LABELS[key]}" is too long (max 400 characters).`);
-    }
-    next[key] = trimmed;
+
+    await db
+      .insert(siteSettings)
+      .values({ id: 1, siteCopy: next, updatedAt: new Date() })
+      .onConflictDoUpdate({
+        target: siteSettings.id,
+        set: { siteCopy: next, updatedAt: new Date() },
+      });
+
+    revalidatePath("/");
+    revalidatePath("/admin/settings");
+    return {};
+  } catch (err) {
+    return { error: (err as Error).message };
   }
-
-  await db
-    .insert(siteSettings)
-    .values({ id: 1, siteCopy: next, updatedAt: new Date() })
-    .onConflictDoUpdate({
-      target: siteSettings.id,
-      set: { siteCopy: next, updatedAt: new Date() },
-    });
-
-  revalidatePath("/");
-  revalidatePath("/admin/settings");
 }

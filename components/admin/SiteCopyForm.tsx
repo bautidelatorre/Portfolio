@@ -42,11 +42,11 @@ export function SiteCopyForm({ defaultValues }: { defaultValues: SiteCopy }) {
     setError(null);
     setSuccess(false);
     startTransition(async () => {
-      try {
-        await updateSiteCopy(values);
+      const result = await updateSiteCopy(values);
+      if (result.error) {
+        setError(result.error);
+      } else {
         setSuccess(true);
-      } catch (err) {
-        setError((err as Error).message);
       }
     });
   }

@@ -64,54 +64,44 @@ export type SiteSettingsInput = {
 const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const FONT_NAME_SHAPE_RE = /^[A-Za-z0-9 ]{1,60}$/;
 
-export async function updateSiteSettings(input: SiteSettingsInput) {
-  await requireAdmin();
+export async function updateSiteSettings(
+  input: SiteSettingsInput
+): Promise<{ error?: string }> {
+  try {
+    await requireAdmin();
 
-  for (const [field, value] of [
-    ["accentColor", input.accentColor],
-    ["backgroundColor", input.backgroundColor],
-    ["darkColor", input.darkColor],
-    ["cursorGlowColor", input.cursorGlowColor],
-  ] as const) {
-    if (!HEX_COLOR_RE.test(value)) {
-      throw new Error(`Color inválido en "${field}". Usá el formato #rrggbb.`);
+    for (const [field, value] of [
+      ["accentColor", input.accentColor],
+      ["backgroundColor", input.backgroundColor],
+      ["darkColor", input.darkColor],
+      ["cursorGlowColor", input.cursorGlowColor],
+    ] as const) {
+      if (!HEX_COLOR_RE.test(value)) {
+        return { error: `Color inválido en "${field}". Usá el formato #rrggbb.` };
+      }
     }
-  }
 
-  const fontFamily = input.fontFamily.trim();
-  if (!FONT_NAME_SHAPE_RE.test(fontFamily)) {
-    throw new Error("Nombre de fuente inválido.");
-  }
-  if (!googleFontsSet.has(fontFamily)) {
-    throw new Error(`"${fontFamily}" no se encontró en Google Fonts.`);
-  }
+    const fontFamily = input.fontFamily.trim();
+    if (!FONT_NAME_SHAPE_RE.test(fontFamily)) {
+      return { error: "Nombre de fuente inválido." };
+    }
+    if (!googleFontsSet.has(fontFamily)) {
+      return { error: `"${fontFamily}" no se encontró en Google Fonts.` };
+    }
 
-  if (![2, 3].includes(input.projectColumns)) {
-    throw new Error("Cantidad de columnas inválida.");
-  }
+    if (![2, 3].includes(input.projectColumns)) {
+      return { error: "Cantidad de columnas inválida." };
+    }
 
-  const cursorGlowSize = Math.max(
-    0,
-    Math.min(MAX_CURSOR_GLOW_SIZE, Math.round(input.cursorGlowSize))
-  );
+    const cursorGlowSize = Math.max(
+      0,
+      Math.min(MAX_CURSOR_GLOW_SIZE, Math.round(input.cursorGlowSize))
+    );
 
-  await db
-    .insert(siteSettings)
-    .values({
-      id: 1,
-      accentColor: input.accentColor,
-      backgroundColor: input.backgroundColor,
-      darkColor: input.darkColor,
-      cursorGlowColor: input.cursorGlowColor,
-      cursorGlowSize,
-      fontFamily,
-      sectionOrder: input.sectionOrder,
-      projectColumns: input.projectColumns,
-      updatedAt: new Date(),
-    })
-    .onConflictDoUpdate({
-      target: siteSettings.id,
-      set: {
+    await db
+      .insert(siteSettings)
+      .values({
+        id: 1,
         accentColor: input.accentColor,
         backgroundColor: input.backgroundColor,
         darkColor: input.darkColor,
@@ -121,9 +111,26 @@ export async function updateSiteSettings(input: SiteSettingsInput) {
         sectionOrder: input.sectionOrder,
         projectColumns: input.projectColumns,
         updatedAt: new Date(),
-      },
-    });
+      })
+      .onConflictDoUpdate({
+        target: siteSettings.id,
+        set: {
+          accentColor: input.accentColor,
+          backgroundColor: input.backgroundColor,
+          darkColor: input.darkColor,
+          cursorGlowColor: input.cursorGlowColor,
+          cursorGlowSize,
+          fontFamily,
+          sectionOrder: input.sectionOrder,
+          projectColumns: input.projectColumns,
+          updatedAt: new Date(),
+        },
+      });
 
-  revalidatePath("/");
-  revalidatePath("/admin/settings");
+    revalidatePath("/");
+    revalidatePath("/admin/settings");
+    return {};
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
 }

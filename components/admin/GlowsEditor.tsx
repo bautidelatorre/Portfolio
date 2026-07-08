@@ -28,49 +28,47 @@ export function GlowsEditor({ initialGlows }: { initialGlows: GlowConfig[] }) {
   }
 
   async function persist(id: string, patch: PersistablePatch) {
-    try {
-      await updateGlow(id, patch);
-    } catch (err) {
-      setError((err as Error).message);
-    }
+    const result = await updateGlow(id, patch);
+    if (result.error) setError(result.error);
   }
 
   async function handleAdd(section: FloatingRenderSection) {
     setError(null);
-    try {
-      const created = await addGlow(section);
-      setGlows((prev) => [...prev, created]);
-    } catch (err) {
-      setError((err as Error).message);
+    const result = await addGlow(section);
+    if (result.error || !result.data) {
+      setError(result.error ?? "Failed to add glow.");
+      return;
     }
+    setGlows((prev) => [...prev, result.data!]);
   }
 
   async function handleDuplicate(glow: GlowConfig) {
     setError(null);
-    try {
-      const created = await addGlow(glow.section);
-      const patch: PersistablePatch = {
-        xPct: clamp(glow.xPct + 6, -20, 120),
-        yPct: clamp(glow.yPct + 6, -20, 120),
-        sizePct: glow.sizePct,
-        blur: glow.blur,
-        color: glow.color,
-        opacity: glow.opacity,
-      };
-      const updated = await updateGlow(created.id, patch);
-      setGlows((prev) => [...prev, updated]);
-    } catch (err) {
-      setError((err as Error).message);
+    const created = await addGlow(glow.section);
+    if (created.error || !created.data) {
+      setError(created.error ?? "Failed to duplicate glow.");
+      return;
     }
+    const patch: PersistablePatch = {
+      xPct: clamp(glow.xPct + 6, -20, 120),
+      yPct: clamp(glow.yPct + 6, -20, 120),
+      sizePct: glow.sizePct,
+      blur: glow.blur,
+      color: glow.color,
+      opacity: glow.opacity,
+    };
+    const updated = await updateGlow(created.data.id, patch);
+    if (updated.error || !updated.data) {
+      setError(updated.error ?? "Failed to duplicate glow.");
+      return;
+    }
+    setGlows((prev) => [...prev, updated.data!]);
   }
 
   async function handleRemove(id: string) {
     setGlows((prev) => prev.filter((g) => g.id !== id));
-    try {
-      await removeGlow(id);
-    } catch (err) {
-      setError((err as Error).message);
-    }
+    const result = await removeGlow(id);
+    if (result.error) setError(result.error);
   }
 
   return (
