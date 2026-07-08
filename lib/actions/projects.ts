@@ -95,3 +95,19 @@ export async function deleteProject(id: number) {
   revalidatePath("/");
   revalidatePath("/admin");
 }
+
+export async function reorderProjects(orderedIds: number[]): Promise<{ error?: string }> {
+  try {
+    await requireAdmin();
+    await Promise.all(
+      orderedIds.map((id, index) =>
+        db.update(projects).set({ sortOrder: index }).where(eq(projects.id, id))
+      )
+    );
+    revalidatePath("/");
+    revalidatePath("/admin");
+    return {};
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
+}
