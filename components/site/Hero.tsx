@@ -33,16 +33,7 @@ export function Hero({
         />
       ))}
       {behind.map((r) => (
-        <FloatingRender
-          key={r.id}
-          src={r.imageUrl}
-          xPct={r.xPct}
-          yPct={r.yPct}
-          widthPct={r.widthPct}
-          rotate={r.rotate}
-          opacity={r.opacity}
-          float={r.float}
-        />
+        <FloatingRender key={r.id} render={r} />
       ))}
 
       <div className="relative mx-auto w-full max-w-5xl 2xl:max-w-7xl">
@@ -69,16 +60,7 @@ export function Hero({
         </div>
       </div>
       {front.map((r) => (
-        <FloatingRender
-          key={r.id}
-          src={r.imageUrl}
-          xPct={r.xPct}
-          yPct={r.yPct}
-          widthPct={r.widthPct}
-          rotate={r.rotate}
-          opacity={r.opacity}
-          float={r.float}
-        />
+        <FloatingRender key={r.id} render={r} />
       ))}
     </section>
   );

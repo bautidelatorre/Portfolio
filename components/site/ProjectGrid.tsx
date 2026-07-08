@@ -33,16 +33,7 @@ export function ProjectGrid({
       className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
       {behind.map((r) => (
-        <FloatingRender
-          key={r.id}
-          src={r.imageUrl}
-          xPct={r.xPct}
-          yPct={r.yPct}
-          widthPct={r.widthPct}
-          rotate={r.rotate}
-          opacity={r.opacity}
-          float={r.float}
-        />
+        <FloatingRender key={r.id} render={r} />
       ))}
       <SectionHeading index="02" label={copy.projectsLabel} />
       <div className={`mt-10 gap-6 ${columnClass}`}>
@@ -55,16 +46,7 @@ export function ProjectGrid({
         <ProjectModal projects={projects} />
       </Suspense>
       {front.map((r) => (
-        <FloatingRender
-          key={r.id}
-          src={r.imageUrl}
-          xPct={r.xPct}
-          yPct={r.yPct}
-          widthPct={r.widthPct}
-          rotate={r.rotate}
-          opacity={r.opacity}
-          float={r.float}
-        />
+        <FloatingRender key={r.id} render={r} />
       ))}
     </section>
   );

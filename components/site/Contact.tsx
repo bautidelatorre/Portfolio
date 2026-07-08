@@ -24,19 +24,10 @@ export function Contact({
   return (
     <section
       id="contact"
-      className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
+      className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 max-sm:pb-44 sm:px-10 lg:px-16 2xl:max-w-7xl 2xl:px-24"
     >
       {behind.map((r) => (
-        <FloatingRender
-          key={r.id}
-          src={r.imageUrl}
-          xPct={r.xPct}
-          yPct={r.yPct}
-          widthPct={r.widthPct}
-          rotate={r.rotate}
-          opacity={r.opacity}
-          float={r.float}
-        />
+        <FloatingRender key={r.id} render={r} />
       ))}
       <SectionHeading index="03" label={copy.contactLabel} />
       <p className="mt-4 max-w-xl text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
@@ -50,23 +41,8 @@ export function Contact({
       >
         {MAIL_TO}
       </a>
-      <div className="mt-12 hidden max-sm:block" aria-hidden="true">
-        {[...behind, ...front].map((r) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img key={r.id} src={r.imageUrl} alt="" className="w-full rounded-2xl object-cover" />
-        ))}
-      </div>
       {front.map((r) => (
-        <FloatingRender
-          key={r.id}
-          src={r.imageUrl}
-          xPct={r.xPct}
-          yPct={r.yPct}
-          widthPct={r.widthPct}
-          rotate={r.rotate}
-          opacity={r.opacity}
-          float={r.float}
-        />
+        <FloatingRender key={r.id} render={r} />
       ))}
     </section>
   );

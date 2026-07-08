@@ -29,7 +29,16 @@ async function getRenders(): Promise<FloatingRenderConfig[]> {
     .from(siteSettings)
     .where(eq(siteSettings.id, 1));
   if (rows.length === 0) return [];
-  return rows[0].floatingRenders.map((r) => ({ ...r, float: r.float ?? true }));
+  return rows[0].floatingRenders.map((r) => ({
+    ...r,
+    float: r.float ?? true,
+    mobileVisible: r.mobileVisible ?? false,
+    mobileXPct: r.mobileXPct ?? r.xPct,
+    mobileYPct: r.mobileYPct ?? r.yPct,
+    mobileWidthPct: r.mobileWidthPct ?? r.widthPct,
+    mobileRotate: r.mobileRotate ?? r.rotate,
+    mobileOpacity: r.mobileOpacity ?? r.opacity,
+  }));
 }
 
 async function saveRenders(renders: FloatingRenderConfig[]) {
@@ -66,6 +75,12 @@ export async function addFloatingRender(
       opacity: 0.85,
       layer: "behind",
       float: true,
+      mobileVisible: false,
+      mobileXPct: 55,
+      mobileYPct: 15,
+      mobileWidthPct: 28,
+      mobileRotate: 0,
+      mobileOpacity: 0.85,
     };
     await saveRenders([...renders, next]);
     return { data: next };
@@ -79,7 +94,19 @@ export async function updateFloatingRender(
   patch: Partial<
     Pick<
       FloatingRenderConfig,
-      "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer" | "float"
+      | "xPct"
+      | "yPct"
+      | "widthPct"
+      | "rotate"
+      | "opacity"
+      | "layer"
+      | "float"
+      | "mobileVisible"
+      | "mobileXPct"
+      | "mobileYPct"
+      | "mobileWidthPct"
+      | "mobileRotate"
+      | "mobileOpacity"
     >
   >
 ): Promise<{ data?: FloatingRenderConfig; error?: string }> {
@@ -105,6 +132,13 @@ export async function updateFloatingRender(
       next.layer = patch.layer as FloatingRenderLayer;
     }
     if (patch.float !== undefined) next.float = patch.float;
+    if (patch.mobileVisible !== undefined) next.mobileVisible = patch.mobileVisible;
+    if (patch.mobileXPct !== undefined) next.mobileXPct = clamp(patch.mobileXPct, -50, 150);
+    if (patch.mobileYPct !== undefined) next.mobileYPct = clamp(patch.mobileYPct, -50, 150);
+    if (patch.mobileWidthPct !== undefined)
+      next.mobileWidthPct = clamp(patch.mobileWidthPct, 4, 150);
+    if (patch.mobileRotate !== undefined) next.mobileRotate = clamp(patch.mobileRotate, -180, 180);
+    if (patch.mobileOpacity !== undefined) next.mobileOpacity = clamp(patch.mobileOpacity, 0, 1);
 
     renders[index] = next;
     await saveRenders(renders);

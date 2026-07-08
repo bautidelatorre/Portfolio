@@ -41,6 +41,12 @@ export type FloatingRenderConfig = {
   opacity: number;
   layer: FloatingRenderLayer;
   float: boolean;
+  mobileVisible: boolean;
+  mobileXPct: number;
+  mobileYPct: number;
+  mobileWidthPct: number;
+  mobileRotate: number;
+  mobileOpacity: number;
 };
 
 export type GlowConfig = {

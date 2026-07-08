@@ -10,8 +10,45 @@ import {
 import type { FloatingRenderConfig, FloatingRenderSection } from "@/lib/db/schema";
 
 type PersistablePatch = Partial<
-  Pick<FloatingRenderConfig, "xPct" | "yPct" | "widthPct" | "rotate" | "opacity" | "layer" | "float">
+  Pick<
+    FloatingRenderConfig,
+    | "xPct"
+    | "yPct"
+    | "widthPct"
+    | "rotate"
+    | "opacity"
+    | "layer"
+    | "float"
+    | "mobileVisible"
+    | "mobileXPct"
+    | "mobileYPct"
+    | "mobileWidthPct"
+    | "mobileRotate"
+    | "mobileOpacity"
+  >
 >;
+
+type ViewMode = "desktop" | "mobile";
+
+type FieldKeys = {
+  x: "xPct" | "mobileXPct";
+  y: "yPct" | "mobileYPct";
+  width: "widthPct" | "mobileWidthPct";
+  rotate: "rotate" | "mobileRotate";
+  opacity: "opacity" | "mobileOpacity";
+};
+
+function fieldsFor(mode: ViewMode): FieldKeys {
+  return mode === "desktop"
+    ? { x: "xPct", y: "yPct", width: "widthPct", rotate: "rotate", opacity: "opacity" }
+    : {
+        x: "mobileXPct",
+        y: "mobileYPct",
+        width: "mobileWidthPct",
+        rotate: "mobileRotate",
+        opacity: "mobileOpacity",
+      };
+}
 
 const SECTIONS: { key: FloatingRenderSection; label: string; dark?: boolean }[] = [
   { key: "hero", label: "Hero" },
@@ -82,6 +119,12 @@ export function FloatingRendersEditor({
       opacity: render.opacity,
       layer: render.layer,
       float: render.float,
+      mobileVisible: render.mobileVisible,
+      mobileXPct: clamp(render.mobileXPct + 6, -40, 100),
+      mobileYPct: clamp(render.mobileYPct + 6, -40, 100),
+      mobileWidthPct: render.mobileWidthPct,
+      mobileRotate: render.mobileRotate,
+      mobileOpacity: render.mobileOpacity,
     };
     const updated = await updateFloatingRender(created.data.id, patch);
     if (updated.error || !updated.data) {
@@ -95,8 +138,10 @@ export function FloatingRendersEditor({
     <div className="space-y-10">
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
       <p className="text-sm text-muted">
-        Vista previa aproximada de cada sección. Arrastrá una imagen para moverla,
-        usá la esquina inferior derecha (o el slider de tamaño) para cambiar el tamaño.
+        Vista previa aproximada de cada sección. Arrastrá una imagen para moverla, usá la esquina
+        inferior derecha (o el slider de tamaño) para cambiar el tamaño. Cambiá entre Desktop y
+        Mobile para configurar cada versión por separado — cada una se guarda y se muestra
+        independientemente.
       </p>
       {SECTIONS.map((section) => (
         <SectionEditor
@@ -133,6 +178,8 @@ function SectionEditor({
 }) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [mode, setMode] = useState<ViewMode>("desktop");
+  const fields = fieldsFor(mode);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     setUploading(true);
@@ -151,13 +198,15 @@ function SectionEditor({
     const rect = canvas.getBoundingClientRect();
     const startX = e.clientX;
     const startY = e.clientY;
-    const latest = { xPct: render.xPct, yPct: render.yPct };
+    const startXPct = render[fields.x];
+    const startYPct = render[fields.y];
+    const latest: PersistablePatch = {};
 
     function onMove(ev: PointerEvent) {
       const dxPct = ((ev.clientX - startX) / rect.width) * 100;
       const dyPct = ((ev.clientY - startY) / rect.height) * 100;
-      latest.xPct = clamp(render.xPct + dxPct, -40, 100);
-      latest.yPct = clamp(render.yPct + dyPct, -40, 100);
+      latest[fields.x] = clamp(startXPct + dxPct, -40, 100);
+      latest[fields.y] = clamp(startYPct + dyPct, -40, 100);
       onPatchLocal(render.id, latest);
     }
     function onUp() {
@@ -176,11 +225,12 @@ function SectionEditor({
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
     const startX = e.clientX;
-    const latest = { widthPct: render.widthPct };
+    const startWidthPct = render[fields.width];
+    const latest: PersistablePatch = {};
 
     function onMove(ev: PointerEvent) {
       const dxPct = ((ev.clientX - startX) / rect.width) * 100;
-      latest.widthPct = clamp(render.widthPct + dxPct, 4, 140);
+      latest[fields.width] = clamp(startWidthPct + dxPct, 4, 140);
       onPatchLocal(render.id, latest);
     }
     function onUp() {
@@ -194,62 +244,89 @@ function SectionEditor({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <h3 className="text-sm font-semibold">{section.label}</h3>
-        <label className="cursor-pointer rounded-full border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted-bg">
-          {uploading ? "Subiendo..." : "+ Agregar imagen"}
-          <input
-            type="file"
-            accept="image/*"
-            disabled={uploading}
-            onChange={handleFileChange}
-            className="hidden"
-          />
-        </label>
+        <div className="flex items-center gap-3">
+          <div className="flex rounded-full border border-border p-0.5 text-xs font-medium">
+            <button
+              type="button"
+              onClick={() => setMode("desktop")}
+              className={`rounded-full px-3 py-1 transition ${
+                mode === "desktop" ? "bg-dark text-white" : "hover:bg-muted-bg"
+              }`}
+            >
+              Desktop
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("mobile")}
+              className={`rounded-full px-3 py-1 transition ${
+                mode === "mobile" ? "bg-dark text-white" : "hover:bg-muted-bg"
+              }`}
+            >
+              Mobile
+            </button>
+          </div>
+          <label className="cursor-pointer rounded-full border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted-bg">
+            {uploading ? "Subiendo..." : "+ Agregar imagen"}
+            <input
+              type="file"
+              accept="image/*"
+              disabled={uploading}
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
+        </div>
       </div>
 
       <div
         ref={canvasRef}
-        className={`relative mt-2 aspect-video w-full touch-none overflow-hidden rounded-lg border border-border ${
-          section.dark ? "bg-dark" : "bg-muted-bg"
-        }`}
+        className={`relative mt-2 touch-none overflow-hidden rounded-lg border border-border ${
+          mode === "desktop" ? "aspect-video w-full" : "mx-auto aspect-[9/16] w-56"
+        } ${section.dark ? "bg-dark" : "bg-muted-bg"}`}
       >
-        {renders.map((render) => (
-          <div
-            key={render.id}
-            onPointerDown={(e) => startDrag(render, e)}
-            className="group absolute cursor-move border border-transparent hover:border-accent"
-            style={{
-              left: `${render.xPct}%`,
-              top: `${render.yPct}%`,
-              width: `${render.widthPct}%`,
-              opacity: render.opacity,
-              transform: `rotate(${render.rotate}deg)`,
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={render.imageUrl}
-              alt=""
-              draggable={false}
-              className="pointer-events-none block h-auto w-full select-none"
-            />
+        {renders.map((render) => {
+          const inactive = mode === "mobile" && !render.mobileVisible;
+          return (
             <div
-              onPointerDown={(e) => startResize(render, e)}
-              className="absolute -right-1.5 -bottom-1.5 h-3.5 w-3.5 cursor-se-resize rounded-full bg-accent opacity-0 group-hover:opacity-100"
-            />
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onRemove(render.id);
+              key={render.id}
+              onPointerDown={(e) => startDrag(render, e)}
+              className={`group absolute cursor-move border border-transparent hover:border-accent ${
+                inactive ? "opacity-30" : ""
+              }`}
+              style={{
+                left: `${render[fields.x]}%`,
+                top: `${render[fields.y]}%`,
+                width: `${render[fields.width]}%`,
+                opacity: inactive ? undefined : render[fields.opacity],
+                transform: `rotate(${render[fields.rotate]}deg)`,
               }}
-              className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-[10px] text-white opacity-0 group-hover:opacity-100"
             >
-              ×
-            </button>
-          </div>
-        ))}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={render.imageUrl}
+                alt=""
+                draggable={false}
+                className="pointer-events-none block h-auto w-full select-none"
+              />
+              <div
+                onPointerDown={(e) => startResize(render, e)}
+                className="absolute -right-1.5 -bottom-1.5 h-3.5 w-3.5 cursor-se-resize rounded-full bg-accent opacity-0 group-hover:opacity-100"
+              />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove(render.id);
+                }}
+                className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-[10px] text-white opacity-0 group-hover:opacity-100"
+              >
+                ×
+              </button>
+            </div>
+          );
+        })}
       </div>
 
       {renders.length > 0 && (
@@ -260,35 +337,54 @@ function SectionEditor({
               className="flex flex-wrap items-center gap-4 rounded-lg border border-border px-3 py-2 text-sm"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={render.imageUrl}
-                alt=""
-                className="h-9 w-9 rounded object-cover"
-              />
-              <label className="flex items-center gap-2">
-                Capa
-                <select
-                  value={render.layer}
-                  onChange={(e) => {
-                    const layer = e.target.value as "behind" | "front";
-                    onPatchLocal(render.id, { layer });
-                    onPersist(render.id, { layer });
-                  }}
-                  className="rounded border border-border px-2 py-1"
-                >
-                  <option value="behind">Detrás del contenido</option>
-                  <option value="front">Encima del contenido</option>
-                </select>
-              </label>
+              <img src={render.imageUrl} alt="" className="h-9 w-9 rounded object-cover" />
+
+              {mode === "mobile" && (
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={render.mobileVisible}
+                    onChange={(e) => {
+                      const mobileVisible = e.target.checked;
+                      onPatchLocal(render.id, { mobileVisible });
+                      onPersist(render.id, { mobileVisible });
+                    }}
+                  />
+                  Visible en mobile
+                </label>
+              )}
+
+              {mode === "desktop" && (
+                <label className="flex items-center gap-2">
+                  Capa
+                  <select
+                    value={render.layer}
+                    onChange={(e) => {
+                      const layer = e.target.value as "behind" | "front";
+                      onPatchLocal(render.id, { layer });
+                      onPersist(render.id, { layer });
+                    }}
+                    className="rounded border border-border px-2 py-1"
+                  >
+                    <option value="behind">Detrás del contenido</option>
+                    <option value="front">Encima del contenido</option>
+                  </select>
+                </label>
+              )}
+
               <label className="flex items-center gap-2">
                 Tamaño
                 <input
                   type="range"
                   min={4}
                   max={100}
-                  value={render.widthPct}
-                  onChange={(e) => onPatchLocal(render.id, { widthPct: Number(e.target.value) })}
-                  onPointerUp={() => onPersist(render.id, { widthPct: render.widthPct })}
+                  value={render[fields.width]}
+                  onChange={(e) =>
+                    onPatchLocal(render.id, { [fields.width]: Number(e.target.value) })
+                  }
+                  onPointerUp={() =>
+                    onPersist(render.id, { [fields.width]: render[fields.width] })
+                  }
                 />
               </label>
               <label className="flex items-center gap-2">
@@ -298,9 +394,13 @@ function SectionEditor({
                   min={0}
                   max={1}
                   step={0.05}
-                  value={render.opacity}
-                  onChange={(e) => onPatchLocal(render.id, { opacity: Number(e.target.value) })}
-                  onPointerUp={() => onPersist(render.id, { opacity: render.opacity })}
+                  value={render[fields.opacity]}
+                  onChange={(e) =>
+                    onPatchLocal(render.id, { [fields.opacity]: Number(e.target.value) })
+                  }
+                  onPointerUp={() =>
+                    onPersist(render.id, { [fields.opacity]: render[fields.opacity] })
+                  }
                 />
               </label>
               <label className="flex items-center gap-2">
@@ -309,23 +409,29 @@ function SectionEditor({
                   type="range"
                   min={-30}
                   max={30}
-                  value={render.rotate}
-                  onChange={(e) => onPatchLocal(render.id, { rotate: Number(e.target.value) })}
-                  onPointerUp={() => onPersist(render.id, { rotate: render.rotate })}
+                  value={render[fields.rotate]}
+                  onChange={(e) =>
+                    onPatchLocal(render.id, { [fields.rotate]: Number(e.target.value) })
+                  }
+                  onPointerUp={() =>
+                    onPersist(render.id, { [fields.rotate]: render[fields.rotate] })
+                  }
                 />
               </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={render.float ?? true}
-                  onChange={(e) => {
-                    const float = e.target.checked;
-                    onPatchLocal(render.id, { float });
-                    onPersist(render.id, { float });
-                  }}
-                />
-                Flotar
-              </label>
+              {mode === "desktop" && (
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={render.float ?? true}
+                    onChange={(e) => {
+                      const float = e.target.checked;
+                      onPatchLocal(render.id, { float });
+                      onPersist(render.id, { float });
+                    }}
+                  />
+                  Flotar
+                </label>
+              )}
               <button
                 type="button"
                 onClick={() => onDuplicate(render)}
