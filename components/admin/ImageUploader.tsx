@@ -40,6 +40,14 @@ export function ImageUploader({
     onChange(images.filter((_, i) => i !== index));
   }
 
+  function moveImage(index: number, direction: -1 | 1) {
+    const target = index + direction;
+    if (target < 0 || target >= images.length) return;
+    const next = [...images];
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  }
+
   return (
     <div>
       <input
@@ -54,21 +62,54 @@ export function ImageUploader({
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
       {images.length > 0 && (
-        <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
-          {images.map((image, index) => (
-            <div key={image.url} className="group relative aspect-square overflow-hidden rounded-lg border border-border">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image.url} alt={image.alt} className="h-full w-full object-cover" />
-              <button
-                type="button"
-                onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-xs text-white opacity-0 transition group-hover:opacity-100"
+        <>
+          <p className="mt-4 text-xs text-muted">
+            La primera imagen es la portada. Usá las flechas para cambiar el orden.
+          </p>
+          <div className="mt-2 grid grid-cols-3 gap-3 sm:grid-cols-4">
+            {images.map((image, index) => (
+              <div
+                key={image.url}
+                className="group relative aspect-square overflow-hidden rounded-lg border border-border"
               >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image.url} alt={image.alt} className="h-full w-full object-cover" />
+                {index === 0 && (
+                  <span className="absolute top-1 left-1 rounded-full bg-black/70 px-2 py-0.5 text-[10px] text-white">
+                    Portada
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-1 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-xs text-white opacity-0 transition group-hover:opacity-100"
+                >
+                  ×
+                </button>
+                <div className="absolute bottom-1 left-1 flex gap-1 opacity-0 transition group-hover:opacity-100">
+                  <button
+                    type="button"
+                    onClick={() => moveImage(index, -1)}
+                    disabled={index === 0}
+                    className="flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-xs text-white disabled:opacity-30"
+                    aria-label="Move earlier"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveImage(index, 1)}
+                    disabled={index === images.length - 1}
+                    className="flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-xs text-white disabled:opacity-30"
+                    aria-label="Move later"
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
